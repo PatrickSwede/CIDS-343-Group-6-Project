@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import static jdk.internal.org.jline.terminal.MouseEvent.Modifier.Control;
 
 // Adding Comment for Preliminary Project Research Assignment
 
@@ -35,9 +37,11 @@ public class Driver implements ApplicationListener {
     float dropTimer;
     Rectangle bucketRectangle;
     Rectangle dropRectangle;
+    Control keyPress = new Control (8,5,new OrthographicCamera());
 
     @Override
     public void create() {
+        // objects
         backGroundTexture = new Texture("background.png");
         bucketTexture = new Texture("bucket.png");
         dropTexture = new Texture("drop.png");
@@ -51,7 +55,11 @@ public class Driver implements ApplicationListener {
         dropSprites = new Array<>();
         bucketRectangle = new Rectangle();
         dropRectangle = new Rectangle();
+        Gdx.input.setInputProcessor(keyPress);
+
     }
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -67,13 +75,22 @@ public class Driver implements ApplicationListener {
     }
 
     private void input() {
+
         float speed = 4f;
         float delta = Gdx.graphics.getDeltaTime();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        //Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+        if (keyPress.getRight()) {
             bucketSprite.translateX(speed * delta);
-        } else if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) {
+
+            //Gdx.input.isKeyPressed((Keys.LEFT))
+        } else if (keyPress.getLeft()) {
             bucketSprite.translateX((-speed * delta));
+        }
+        else if (keyPress.getUp()){
+            bucketSprite.translateY(speed * delta);
+        }
+        else if (keyPress.getDown()){
+            bucketSprite.translateY((-speed * delta));
         }
 
         if (Gdx.input.isTouched()) {

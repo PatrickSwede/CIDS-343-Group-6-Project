@@ -1,5 +1,6 @@
 package io.github.CIDS_343_Group_6_Project;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -7,35 +8,109 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import lombok.Getter;
-import lombok.Setter;
 
-
-@Getter
-@Setter
 public class Control extends InputAdapter implements InputProcessor {
+
+
     // CAMERA
     OrthographicCamera camera;
 
     // DIRECTIONS
-    public boolean up;
-    public boolean down;
-    public boolean left;
-    public boolean right;
+    private boolean up;
+    private boolean down;
+    private boolean left;
+    private boolean right;
 
     // MOUSE
-    public boolean  LMB;
-    public boolean  RMB;
-    public boolean  processed_click;
-    public Vector2  mouse_click_pos = new Vector2();
-    public Vector2  map_click_pos = new Vector2();
+    private boolean  LMB;
+    private boolean  RMB;
+    private boolean  processed_click;
+    private Vector2  mouse_click_pos = new Vector2();
+    private Vector2  map_click_pos = new Vector2();
 
     // DEBUG
-    public boolean debug;
+    private boolean debug;
 
     // SCREEN
-    int screen_width;
-    int screen_height;
+    private int screen_width;
+    private int screen_height;
+
+    //------------Getter-----------------------------------------------------
+    //-----------------------------------------------------------------------
+    public boolean getUp (){
+        return up;
+    }
+    public boolean getDown (){
+        return down;
+    }
+    public boolean getLeft (){
+        return left;
+    }
+    public boolean getRight (){
+        return right;
+    }
+    public boolean getLMB (){
+        return LMB;
+    }
+    public boolean getRMB (){
+        return RMB;
+    }
+    public boolean getProcessed_click (){
+        return processed_click;
+    }
+    public Vector2 getmouse_click_pos (){
+        return mouse_click_pos;
+    }
+    public Vector2 getmap_click_pos (){
+        return map_click_pos;
+    }
+    public boolean getDebug (){
+        return debug;
+    }
+    public int getScreen_width (){
+        return screen_width;
+    }
+    public int getScreen_height (){
+        return screen_height;
+    }
+    //------------Setter-----------------------------------------------------
+    //-----------------------------------------------------------------------
+    public void setUp ( boolean up ){
+        this.up = up;
+    }
+    public void setDown (boolean down){
+        this.down = down;
+    }
+    public void setLeft ( boolean left ){
+        this.left = left;
+    }
+    public void setRight (boolean right){
+            this.right = right;
+    }
+    public void setLMB (boolean LMB){
+        this.LMB = LMB;
+    }
+    public void setRMB (boolean RMB){
+        this.RMB = RMB;
+    }
+    public void setProcessed_click (boolean processed_click){
+        this.processed_click = processed_click;
+    }
+    public void getmouse_click_pos ( Vector2 pos ){
+        this.mouse_click_pos = pos;
+    }
+    public void getmap_click_pos ( Vector2 pos ){
+        this.map_click_pos = pos;
+    }
+    public void setDebug ( boolean debug ){
+        this.debug = debug;
+    }
+    public void setScreen_width ( int screen_width ){
+        this.screen_width = screen_width;
+    }
+    public void setScreen_height ( int screen_height ){
+        this.screen_height = screen_height;
+    }
 
     public Control(int screen_width, int screen_height, OrthographicCamera camera){
         this.camera = camera;
