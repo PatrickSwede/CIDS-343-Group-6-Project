@@ -242,4 +242,37 @@ public class Control extends InputAdapter implements InputProcessor {
 
 
 }
+/*
+Notes on how to use class
+* from tutorial game on lib gdx with this class
+* Integration with this class in the driver for tutorial game
+if (keyPress.getRight()) {
+    bucketSprite.translateX(speed * delta);
+    }
+    private void input() {
 
+        float speed = 4f;
+        float delta = Gdx.graphics.getDeltaTime();
+        //Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+        if (keyPress.getRight()) {
+            bucketSprite.translateX(speed * delta);
+
+            //Gdx.input.isKeyPressed((Keys.LEFT))
+        } else if (keyPress.getLeft()) {
+            bucketSprite.translateX((-speed * delta));
+        }
+        else if (keyPress.getUp()){
+            bucketSprite.translateY(speed * delta);
+        }
+        else if (keyPress.getDown()){
+            bucketSprite.translateY((-speed * delta));
+        }
+        * did not get integrated
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+            viewport.unproject(touchPos);
+            bucketSprite.setCenterX(touchPos.x);
+        }
+    }
+
+*/
