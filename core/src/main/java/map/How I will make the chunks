@@ -1,0 +1,8 @@
+(Example will use a size 9 generation)
+I generate the level first, a 9x9 array where each element will be a 'chunk'
+After generating the 'Level' each nonzero element will generate a chunk
+Within each chunk, each border will be known (Which chunks this generated chunk will be
+    adjacent to)
+Generate the chunk randomly until all 'doors' (the middle border adjacent tiles) connect
+    with the main map
+
