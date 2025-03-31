@@ -5,4 +5,4 @@ Within each chunk, each border will be known (Which chunks this generated chunk 
     adjacent to)
 Generate the chunk randomly until all 'doors' (the middle border adjacent tiles) connect
     with the main map
-
+Spread until the map touches all doors
