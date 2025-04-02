@@ -25,6 +25,8 @@ public class Driver implements ApplicationListener {
     Texture backGroundTexture;
     Texture bucketTexture;
     Texture dropTexture;
+    Texture kiryuTexture;
+    Sprite kiryuSprite;
     Sound dropSound;
     Music music;
     SpriteBatch spriteBatch;
@@ -51,6 +53,9 @@ public class Driver implements ApplicationListener {
         dropSprites = new Array<>();
         bucketRectangle = new Rectangle();
         dropRectangle = new Rectangle();
+        kiryuTexture = new Texture("kiryu-chan - Copy.png");
+        kiryuSprite = new Sprite(kiryuTexture);
+        kiryuSprite.setSize(1,1);
     }
 
     @Override
@@ -71,28 +76,28 @@ public class Driver implements ApplicationListener {
         float delta = Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucketSprite.translateX(speed * delta);
+            kiryuSprite.translateX(speed * delta);
         } else if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) {
-            bucketSprite.translateX((-speed * delta));
+            kiryuSprite.translateX((-speed * delta));
         }
 
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             viewport.unproject(touchPos);
-            bucketSprite.setCenterX(touchPos.x);
+            kiryuSprite.setCenterX(touchPos.x);
         }
     }
 
     private void logic() {
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
-        float bucketWidth = bucketSprite.getWidth();
-        float bucketHeight = bucketSprite.getHeight();
+        float kiryuWidth = kiryuSprite.getWidth();
+        float kiryuHeight = kiryuSprite.getHeight();
 
-        bucketSprite.setX(MathUtils.clamp(bucketSprite.getX(), 0, worldWidth- bucketWidth));
+        kiryuSprite.setX(MathUtils.clamp(kiryuSprite.getX(), 0, worldWidth- kiryuWidth));
 
         float delta = Gdx.graphics.getDeltaTime();
-        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), bucketWidth, bucketHeight);
+        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), kiryuWidth, kiryuHeight);
 
         for (int i = dropSprites.size - 1; i >= 0; i--) {
             Sprite dropSprite = dropSprites.get(i);
@@ -125,7 +130,7 @@ public class Driver implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         spriteBatch.draw(backGroundTexture, 0, 0, worldWidth, worldHeight);
-        bucketSprite.draw(spriteBatch);
+        kiryuSprite.draw(spriteBatch);
 
         for(Sprite dropSprite : dropSprites) {
             dropSprite.draw(spriteBatch);
