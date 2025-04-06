@@ -1,7 +1,7 @@
 package map;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import io.github.CIDS_343_Group_6_Project.Enums.TILETYPE;
-import com.badlogic.gdx.graphics.Texture;
 import io.github.CIDS_343_Group_6_Project.Entity;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,10 +10,10 @@ import com.badlogic.gdx.math.Vector2;
  * @author Patrick Swedenborg
  */
 public class Tile extends Entity {
-    private int size;
+    private float size;
     private int row;
     private int col;
-    private Texture secondaryTexture;
+    private TextureRegion secondaryTexture;
     private TILETYPE type;
     private String code;
 
@@ -25,8 +25,8 @@ public class Tile extends Entity {
      * @param type the type of tile with all possible types in the Enums class
      * @param texture the primary texture for the tile
      */
-    public Tile(float x, float y, int size, Texture texture, TILETYPE type) {
-        super(new Vector2(x * size,y * size), texture, size, size);
+    public Tile(float x, float y, float size, TextureRegion texture, TILETYPE type) {
+        super(new Vector2(x,y), texture, size, size);
         this.size = size;
         this.col = (int) x;
         this.row = (int) y;
@@ -38,7 +38,7 @@ public class Tile extends Entity {
      * Getter for size attribute
      * @return size
      */
-    public int getSize(){
+    public float getSize(){
         return size;
     }
 
@@ -62,7 +62,7 @@ public class Tile extends Entity {
      * Getter for secondaryTexture attribute
      * @return secondaryTexture
      */
-    public Texture getSecondaryTexture() {
+    public TextureRegion getSecondaryTexture() {
         return secondaryTexture;
     }
 
@@ -86,7 +86,7 @@ public class Tile extends Entity {
      * Setter for size attribute
      * @param size the new size represented as an int
      */
-    public void setSize(int size) {
+    public void setSize(float size) {
         this.size = size;
     }
 
@@ -110,7 +110,7 @@ public class Tile extends Entity {
      * Setter for secondaryTexture attribute
      * @param secondaryTexture the new secondary texture represented as a Texture
      */
-    public void setSecondary_texture(Texture secondaryTexture) {
+    public void setSecondary_texture(TextureRegion secondaryTexture) {
         this.secondaryTexture = secondaryTexture;
     }
 

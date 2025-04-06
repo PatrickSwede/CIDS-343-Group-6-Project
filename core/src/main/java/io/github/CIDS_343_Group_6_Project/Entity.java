@@ -2,6 +2,7 @@ package io.github.CIDS_343_Group_6_Project;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -10,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class Entity {
     private Vector2 pos;
-    private Texture texture;
+    private TextureRegion texture;
     private float width;
     private float height;
 
@@ -21,7 +22,7 @@ public abstract class Entity {
      * @param width the width represented as a float
      * @param height the height represented as a float
      */
-    public Entity(Vector2 pos, Texture texture, float width, float height) {
+    public Entity(Vector2 pos, TextureRegion texture, float width, float height) {
         this.pos = pos;
         this.texture = texture;
         this.width = width;
@@ -30,7 +31,7 @@ public abstract class Entity {
 
     /**
      * A basic draw method to put the instance on the screen
-     * @param batch the instance being visualized on the screen
+     * @param batch the spritebatch used to visualize the entity
      */
     public void draw(SpriteBatch batch) {
         batch.draw(texture, pos.x, pos.y, width, height);
@@ -48,7 +49,7 @@ public abstract class Entity {
      * Getter for texture attribute
      * @return texture
      */
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 
@@ -80,7 +81,7 @@ public abstract class Entity {
      * Setter for texture attribute
      * @param texture the new texture for the entity
      */
-    public void setTexture(Texture texture) {
+    public void setTexture(TextureRegion texture) {
         this.texture = texture;
     }
 
