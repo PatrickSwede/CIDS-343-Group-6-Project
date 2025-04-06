@@ -1,6 +1,6 @@
 package map;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * A simple class to generate chunks made of tiles which the environment will consist of
@@ -9,20 +9,18 @@ import java.util.ArrayList;
 public class Chunk {
     private int numberRows;
     private int numberCols;
-    private int tileSize;
-    private ArrayList<ArrayList<Tile>> tiles;
+    private Tile[][] tiles;
 
     /**
      * The constructor to instantiate a simple chunk
      * @param numberRows an int specifying the number of rows
      * @param numberCols am int specifying the number of columns
-     * @param tileSize an int representing the size
+     * @param tiles a two-dimensional array of tiles
      */
-    public Chunk(int numberRows, int numberCols, int tileSize) {
-        tiles = new ArrayList<ArrayList<Tile>>();
+    public Chunk(int numberRows, int numberCols, Tile[][] tiles) {
+        this.tiles = tiles;
         this.numberRows = numberRows;
         this.numberCols = numberCols;
-        this.tileSize = tileSize;
     }
 
     /**
@@ -41,19 +39,12 @@ public class Chunk {
         return numberCols;
     }
 
-    /**
-     * Getter for tileSize attribute
-     * @return tileSize
-     */
-    public int getTileSize() {
-        return tileSize;
-    }
 
     /**
      * Getter for tiles attribute
      * @return tiles
      */
-    public ArrayList<ArrayList<Tile>> getTiles() {
+    public Tile[][] getTiles() {
         return tiles;
     }
 
@@ -74,18 +65,10 @@ public class Chunk {
     }
 
     /**
-     * Setter for tileSize attribute
-     * @param tileSize an int representing the size of the tiles in the chunk
-     */
-    public void setTileSize(int tileSize) {
-        this.tileSize = tileSize;
-    }
-
-    /**
      * Setter for tiles attribute
-     * @param tiles a two-dimensional arraylist consisting of tile objects which the chunk consists of
+     * @param tiles a two-dimensional array consisting of tile objects which the chunk consists of
      */
-    public void setTiles(ArrayList<ArrayList<Tile>> tiles) {
+    public void setTiles(Tile[][] tiles) {
         this.tiles = tiles;
     }
 
@@ -97,18 +80,7 @@ public class Chunk {
      * @return null if invalid parameters else the tile code (passable or not)
      */
     public String getTileCode(int row, int col) {
-        Tile tile;
-
-        ArrayList<Tile> chunkRow;
-        if (tiles.size() > row && row >= 0) {
-            chunkRow = tiles.get(row);
-
-            if(chunkRow != null && chunkRow.size() > col && col >= 0) {
-                tile = chunkRow.get(col);
-                return tile.isPassable() ? "1" : "0";
-            }
-        }
-        return null;
+       return tiles[row][col].getCode();
     }
 
     /**
@@ -119,14 +91,19 @@ public class Chunk {
      */
     public Tile getTile(int row, int col) {
         System.out.println("Row: " + row + " Col: " + col);
-        ArrayList<Tile> chunkRow;
-        if(tiles.size() > row && row >= 0) {
-            chunkRow = tiles.get(row);
+        return tiles[row][col];
+    }
 
-            if(chunkRow != null && chunkRow.size() > col && col >= 0) {
-                return chunkRow.get(col);
+    /**
+     * A method to draw the chunk
+     * @param batch the spritebatch used to visualize the chunk
+     */
+    public void draw(SpriteBatch batch) {
+        for(int i = 0 ; i < numberRows; i++) {
+            for(int j = 0; j < numberCols; j++) {
+                batch.draw(tiles[i][j].getTexture(), tiles[i][j].getPos().x * tiles[i][j].getSize(),
+                    tiles[i][j].getPos().y * tiles[i][j].getSize(), tiles[i][j].getSize(), tiles[i][j].getSize());
             }
         }
-        return null;
     }
 }
