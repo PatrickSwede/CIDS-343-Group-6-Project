@@ -2,21 +2,22 @@ package io.github.CIDS_343_Group_6_Project;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import map.Chunk;
+import map.Tile;
 
 // Adding Comment for Preliminary Project Research Assignment
 
@@ -25,8 +26,6 @@ public class Driver implements ApplicationListener {
     Texture backGroundTexture;
     Texture bucketTexture;
     Texture dropTexture;
-    Texture kiryuTexture;
-    Sprite kiryuSprite;
     Sound dropSound;
     Music music;
     SpriteBatch spriteBatch;
@@ -37,26 +36,48 @@ public class Driver implements ApplicationListener {
     float dropTimer;
     Rectangle bucketRectangle;
     Rectangle dropRectangle;
+    Control keyPress = new Control (8,5,new OrthographicCamera());
+
+    // For hard coded map
+    Tile[][] tiles;
+    Chunk chunk;
+
 
     @Override
     public void create() {
-        backGroundTexture = new Texture("background.png");
+        // objects
         bucketTexture = new Texture("bucket.png");
         dropTexture = new Texture("drop.png");
         dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
         spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(8, 5);
+        viewport = new FitViewport(800, 800);
         bucketSprite = new Sprite(bucketTexture);
-        bucketSprite.setSize(1, 1);
+        bucketSprite.setSize(50, 50);
         touchPos = new Vector2();
         dropSprites = new Array<>();
         bucketRectangle = new Rectangle();
         dropRectangle = new Rectangle();
-        kiryuTexture = new Texture("kiryu-chan - Copy.png");
-        kiryuSprite = new Sprite(kiryuTexture);
-        kiryuSprite.setSize(1,1);
+        Gdx.input.setInputProcessor(keyPress);
+
+
+        // For hard coded map
+        tiles = new Tile[30][30];
+        TextureRegion tempText;
+
+        for(int i = 0; i < 30; i++) {
+            for(int j = 0; j < 30; j++) {
+                if((i < 5 || i > 24) || (j < 5 || j > 24)) {tempText = Enums.TILETYPE.WATER.getValue();}
+                else {tempText = Enums.TILETYPE.GRASS.getValue();}
+                tiles[i][j] = new Tile(j, i,  80/3f , tempText, Enums.TILETYPE.WATER);
+                }
+            }
+
+        chunk = new Chunk(30, 30, tiles);
+        chunk.setTiles(tiles);
     }
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -72,39 +93,58 @@ public class Driver implements ApplicationListener {
     }
 
     private void input() {
-        float speed = 4f;
+
+        float speed = 1000f;
         float delta = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            kiryuSprite.translateX(speed * delta);
-        } else if (Gdx.input.isKeyPressed((Input.Keys.LEFT))) {
-            kiryuSprite.translateX((-speed * delta));
+        if (keyPress.getUp() && keyPress.getRight()) {
+            bucketSprite.translateY(speed * delta);
+            bucketSprite.translateX(speed * delta);
+        } else if (keyPress.getUp() && keyPress.getLeft()) {
+            bucketSprite.translateY(speed * delta);
+            bucketSprite.translateX(-speed * delta);
+        } else if (keyPress.getUp()) {
+            bucketSprite.translateY(speed * delta);
+        } else if (keyPress.getDown() && keyPress.getRight()) {
+            bucketSprite.translateY(-speed * delta);
+            bucketSprite.translateX(speed * delta);
+        } else if (keyPress.getDown() && keyPress.getLeft()) {
+            bucketSprite.translateY(-speed * delta);
+            bucketSprite.translateX(-speed * delta);
+        } else if (keyPress.getDown()) {
+            bucketSprite.translateY(-speed * delta);
+        } else if(keyPress.getRight()) {
+            bucketSprite.translateX(speed * delta);
+        } else if(keyPress.getLeft()) {
+            bucketSprite.translateX(-speed * delta);
         }
-
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             viewport.unproject(touchPos);
-            kiryuSprite.setCenterX(touchPos.x);
+            bucketSprite.setCenterX(touchPos.x);
+            bucketSprite.setCenterY(touchPos.y);
         }
     }
 
     private void logic() {
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
-        float kiryuWidth = kiryuSprite.getWidth();
-        float kiryuHeight = kiryuSprite.getHeight();
+        float bucketWidth = bucketSprite.getWidth();
+        float bucketHeight = bucketSprite.getHeight();
 
-        kiryuSprite.setX(MathUtils.clamp(kiryuSprite.getX(), 0, worldWidth- kiryuWidth));
+        bucketSprite.setX(MathUtils.clamp(bucketSprite.getX(), 0, worldWidth- bucketWidth));
+        bucketSprite.setY(MathUtils.clamp(bucketSprite.getY(), 0, worldHeight - bucketHeight));
 
         float delta = Gdx.graphics.getDeltaTime();
-        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), kiryuWidth, kiryuHeight);
+        bucketRectangle.set(bucketSprite.getX(), bucketSprite.getY(), bucketWidth, bucketHeight);
 
+        /*
         for (int i = dropSprites.size - 1; i >= 0; i--) {
             Sprite dropSprite = dropSprites.get(i);
             float dropWidth = dropSprite.getWidth();
             float dropHeight = dropSprite.getHeight();
 
-            dropSprite.translateY(-2f * delta);
+            dropSprite.translateY(-100f * delta);
             dropRectangle.set(dropSprite.getX(), dropSprite.getY(), dropWidth, dropHeight);
 
             if (dropSprite.getY() < -dropHeight) dropSprites.removeIndex(i);
@@ -118,6 +158,7 @@ public class Driver implements ApplicationListener {
             dropTimer = 0;
             createDroplet();
         }
+         */
     }
 
     private void draw() {
@@ -125,23 +166,21 @@ public class Driver implements ApplicationListener {
         viewport.apply();
         spriteBatch.setProjectionMatrix((viewport.getCamera().combined));
         spriteBatch.begin();
+        // Hard coded map
+        chunk.draw(spriteBatch);
 
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
-
-        spriteBatch.draw(backGroundTexture, 0, 0, worldWidth, worldHeight);
-        kiryuSprite.draw(spriteBatch);
-
+        bucketSprite.draw(spriteBatch);
+        /*
         for(Sprite dropSprite : dropSprites) {
             dropSprite.draw(spriteBatch);
         }
-
+        */
         spriteBatch.end();
     }
 
     private void createDroplet() {
-        float dropWidth = 1;
-        float dropHeight = 1;
+        float dropWidth = 50;
+        float dropHeight = 50;
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 
@@ -164,6 +203,7 @@ public class Driver implements ApplicationListener {
     @Override
     public void dispose() {
         // Destroy application's resources here.
+        spriteBatch.dispose();
     }
 }
 
