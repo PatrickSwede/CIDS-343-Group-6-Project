@@ -41,6 +41,8 @@ public class Driver implements ApplicationListener {
     // For hard coded map
     Tile[][] tiles;
     Chunk chunk;
+    Character player;
+    Movement movement;
 
 
     @Override
@@ -64,17 +66,36 @@ public class Driver implements ApplicationListener {
         // For hard coded map
         tiles = new Tile[30][30];
         TextureRegion tempText;
+        boolean isPassable;
+
+
 
         for(int i = 0; i < 30; i++) {
+            System.out.println();
             for(int j = 0; j < 30; j++) {
-                if((i < 5 || i > 24) || (j < 5 || j > 24)) {tempText = Enums.TILETYPE.WATER.getValue();}
-                else {tempText = Enums.TILETYPE.GRASS.getValue();}
+                if((i < 5 || i > 24) || (j < 5 || j > 24)) {
+                    tempText = Enums.TILETYPE.WATER.getValue();
+                    isPassable = false;
+                }
+                else {
+                    tempText = Enums.TILETYPE.GRASS.getValue();
+                    isPassable = true;
+                }
                 tiles[i][j] = new Tile(j, i,  80/3f , tempText, Enums.TILETYPE.WATER);
+                if(isPassable) {tiles[i][j].setCode("1");}
+                else { tiles[i][j].setCode("0");}
+                System.out.print(tiles[i][j].getCode());
                 }
             }
 
         chunk = new Chunk(30, 30, tiles);
         chunk.setTiles(tiles);
+        player = new Character(new Vector2( 400.0f, 400.0f ), new TextureRegion(bucketTexture), 50,50);
+        movement = new Movement(player, chunk);
+        bucketSprite.translateX(400);
+        bucketSprite.translateY(400);
+        System.out.println(bucketSprite.getX() + " " +  bucketSprite.getY());
+        System.out.println((int) Math.floor((int) (400.0 / (80/3f))));
     }
 
 
@@ -96,27 +117,60 @@ public class Driver implements ApplicationListener {
 
         float speed = 1000f;
         float delta = Gdx.graphics.getDeltaTime();
+        String direction;
 
         if (keyPress.getUp() && keyPress.getRight()) {
-            bucketSprite.translateY(speed * delta);
-            bucketSprite.translateX(speed * delta);
+            direction = "up right";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(speed * delta);
+                bucketSprite.translateX(speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if (keyPress.getUp() && keyPress.getLeft()) {
-            bucketSprite.translateY(speed * delta);
-            bucketSprite.translateX(-speed * delta);
+            direction = "up left";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(speed * delta);
+                bucketSprite.translateX(-speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if (keyPress.getUp()) {
-            bucketSprite.translateY(speed * delta);
+            direction = "up";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if (keyPress.getDown() && keyPress.getRight()) {
-            bucketSprite.translateY(-speed * delta);
-            bucketSprite.translateX(speed * delta);
+            direction = "down right";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(-speed * delta);
+                bucketSprite.translateX(speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if (keyPress.getDown() && keyPress.getLeft()) {
-            bucketSprite.translateY(-speed * delta);
-            bucketSprite.translateX(-speed * delta);
+            direction = "down left";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(-speed * delta);
+                bucketSprite.translateX(-speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if (keyPress.getDown()) {
-            bucketSprite.translateY(-speed * delta);
+            direction = "down";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateY(-speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if(keyPress.getRight()) {
-            bucketSprite.translateX(speed * delta);
+            direction = "right";
+            if(movement.isMoveValid(direction)) {
+                bucketSprite.translateX(speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         } else if(keyPress.getLeft()) {
-            bucketSprite.translateX(-speed * delta);
+            direction = "left";
+            if (movement.isMoveValid(direction)) {
+                bucketSprite.translateX(-speed * delta);
+                player.setPos(new Vector2(bucketSprite.getX(), bucketSprite.getY()));
+            }
         }
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());

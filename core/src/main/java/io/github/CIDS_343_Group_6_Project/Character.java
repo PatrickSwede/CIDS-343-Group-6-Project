@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -28,8 +29,8 @@ public class Character extends Entity{
      *
      */
     // Constructors
-    public Character(){
-
+    public Character(Vector2 pos, TextureRegion texture, float width, float height){
+        super(new Vector2(pos.x, pos.y), texture, width, height);
     }
 
     // character states
