@@ -1,6 +1,6 @@
 package io.github.CIDS_343_Group_6_Project;
 
-public class Enemy extends NPC{
+/*public class Enemy extends NPC{
 
     public Enemy(String enemy_name, int enemy_health, int enemy_magic,int enemy_intelligence ){
         this.setControllable(false);
@@ -10,3 +10,5 @@ public class Enemy extends NPC{
         this.setCharacterIntelligence(enemy_intelligence);
     }
 }
+*/
+
