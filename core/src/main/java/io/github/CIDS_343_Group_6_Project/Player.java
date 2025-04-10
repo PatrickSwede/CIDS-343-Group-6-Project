@@ -1,6 +1,8 @@
 package io.github.CIDS_343_Group_6_Project;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 /** Player class under character
  *
@@ -20,7 +22,8 @@ public class Player extends Character{
      * @param player_name
      * set Controllable from character parent to true
      */
-    public Player(String player_name){
+    public Player(Vector2 pos, TextureRegion texture, float width, float height, String player_name){
+        super(new Vector2(pos.x, pos.y), texture, width, height);
         this.name = player_name;
         this.setControllable(true);
     }
