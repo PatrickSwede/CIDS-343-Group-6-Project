@@ -1,6 +1,7 @@
 package map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * A simple class to generate chunks made of tiles which the environment will consist of
@@ -21,6 +22,17 @@ public class Chunk {
         this.tiles = tiles;
         this.numberRows = numberRows;
         this.numberCols = numberCols;
+    }
+
+    public Tile getTile(Vector2 pos) {
+        for(int i = 0; i < numberRows; i++) {
+            for(int j = 0; j < numberCols; j++) {
+                if (pos.x == tiles[i][j].getPos().x && pos.y == tiles[i][j].getPos().y) {
+                    return tiles[i][j];
+                }
+            }
+        }
+        return null;
     }
 
     /**
