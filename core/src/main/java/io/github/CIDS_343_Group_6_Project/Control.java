@@ -242,10 +242,10 @@ public class Control extends InputAdapter implements InputProcessor {
 
 
 }
-/*
+/**
 Notes on how to use class
-* from tutorial game on lib gdx with this class
-* Integration with this class in the driver for tutorial game
+-- from tutorial game on lib gdx with this class
+-- Integration with this class in the driver for tutorial game
 if (keyPress.getRight()) {
     bucketSprite.translateX(speed * delta);
     }
@@ -274,5 +274,4 @@ if (keyPress.getRight()) {
             bucketSprite.setCenterX(touchPos.x);
         }
     }
-
-*/
+ */
