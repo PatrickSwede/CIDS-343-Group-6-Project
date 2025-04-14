@@ -66,6 +66,7 @@ public class Character extends Entity{
      * for hit detection
      */
     private Rectangle hitBox = new Rectangle();
+    private HitDetector hitDetector = new HitDetector();
 
 
 
