@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ChunkGenerator {
     //protected int[][] Chunk;
-    public int[][] GenerateChunk(int size, boolean up,boolean right,boolean down, boolean left, float spread, float obstacleDensity){
+    public int[][] GenerateChunk(int size, boolean[] border, boolean up,boolean right,boolean down, boolean left, float spread, float obstacleDensity){
 
         Random rand = new Random();//Initialize the randomness
         int[][] chunk = new int[size][size];
@@ -183,11 +183,11 @@ public class ChunkGenerator {
             }
         }
         if(obstacleDensity >= 0){
-            chunk = placeObstacles(chunk,size,obstacleDensity, up, right, down, left);
+            chunk = placeObstacles(chunk,border,size,obstacleDensity, up, right, down, left);
         }
         return chunk;
     }
-    private int[][] placeObstacles(int[][] chunk, int size, float density, boolean up, boolean right, boolean down, boolean left){
+    private int[][] placeObstacles(int[][] chunk,boolean[] border, int size, float density, boolean up, boolean right, boolean down, boolean left){
         if(density <= 0){
             return chunk;
         }
@@ -203,10 +203,13 @@ public class ChunkGenerator {
                 }
             }
         }
-        int tilesLeft = tileCount;//the amount of walkable tiles that are left
+        int tilesLeft = tileCount; //the amount of walkable tiles that are left
         List<int[]> searchedTiles = new ArrayList<int[]>(); //The list of tiles that have been searched so far
         searchedTiles.add(new int[]{size/2,size/2});
+
         for(int i = 0; i < tileCount; i++){
+            //System.out.println(tilesLeft + ":" + search(chunk,1,1,size).size());
+
             int roomToCheck = rand.nextInt(tileCount - i);//pick a random tile from the queue
             chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 2;//2 in chunk designates obstacle
             int adjs = 0;
@@ -240,7 +243,7 @@ public class ChunkGenerator {
                 (obstacleQueue.get(roomToCheck)[0] == size/2 && obstacleQueue.get(roomToCheck)[1] == size/2)){//center
                 //if it would block the door, do not place an obstacle
                 chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 1;
-            }else if(search(chunk,obstacleQueue.get(roomToCheck)[0],obstacleQueue.get(roomToCheck)[1], size).size() == tilesLeft){
+            }else if(search(chunk, size).size() == tilesLeft - 1){
                 //If adding an obstacle here does not disallow the player from reaching anywhere else
                 float chance = rand.nextFloat();
                 if(chance >= density){//adds variance for placing obstacles
@@ -253,14 +256,27 @@ public class ChunkGenerator {
             }
             obstacleQueue.remove(roomToCheck);
         }
+        //add doors
+        if(up && !border[0]){
+            chunk[size/2][0] = 3;
+        }
+        if(right && !border[1]){
+            chunk[size-1][size/2] = 3;
+        }
+        if(down && !border[2]){
+            chunk[size/2][size-1] = 3;
+        }
+        if(left && !border[3]){
+            chunk[0][size/2] = 3;
+        }
         return chunk;
     }
 
     //Shorthand search program
-    private List<int[]> search(int[][] room, int X, int Y, int size){
+    private List<int[]> search(int[][] room, int size){
         List<int[]> tilesQueue = new ArrayList<int[]>();
         List<int[]> tilesChecked = new ArrayList<int[]>();
-        tilesQueue.add(new int[]{X,Y});
+        tilesQueue.add(new int[]{size/2,size/2});
         while(!tilesQueue.isEmpty()){
             //System.out.println(tilesQueue.size());
             if(tilesQueue.get(0)[1] != 0){//if not up

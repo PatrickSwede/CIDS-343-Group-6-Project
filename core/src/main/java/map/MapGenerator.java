@@ -217,8 +217,20 @@ public class MapGenerator {
                 dir[3] = true;
             }
             //Chunk name = new Chunk(ChunkG.GenerateChunk(chunkSize, dir[0],dir[1],dir[2],dir[3], 1),true);
-
-            fullMap[mapRooms.get(i)[0]][mapRooms.get(i)[1]] = new Chunk(ChunkG.GenerateChunk(chunkSize, dir[0],dir[1],dir[2],dir[3], 1, obstacleDensity),true);;
+            boolean[] border = new boolean[4];
+            if(mapRooms.get(i)[1] == 0){//up
+                border[0] = true;
+            }
+            if(mapRooms.get(i)[0] == size-1){//right
+                border[1] = true;
+            }
+            if(mapRooms.get(i)[1] == size-1){//down
+                border[2] = true;
+            }
+            if(mapRooms.get(i)[0] == 0){//left
+                border[3] = true;
+            }
+            fullMap[mapRooms.get(i)[0]][mapRooms.get(i)[1]] = new Chunk(ChunkG.GenerateChunk(chunkSize,border,dir[0],dir[1],dir[2],dir[3], 1, obstacleDensity),true);;
         }
         int[][] empty = new int[0][0];
         for(int i = 0; i < size; i++){
