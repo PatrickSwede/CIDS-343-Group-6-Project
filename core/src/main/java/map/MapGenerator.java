@@ -11,7 +11,7 @@ import java.util.Random;
  *
  */
 public class MapGenerator {
-    private ChunkGenerator ChunkG;
+    private ChunkGenerator ChunkG = new ChunkGenerator();
     public Chunk[][] generateMap(int size, int numRooms, float spread, int chunkSize){
 
         if(numRooms > size * size){//If the rooms exceeds the maximum amount possible in the array
@@ -174,10 +174,6 @@ public class MapGenerator {
                                 mapData.get(i)[0] += 1;
                                 mapData.get(i)[1] += 1;
                             }
-                            //System.out.print("[" + mapData.get(i)[0] + "]}");
-                            for(int a = 0; a <= i; a++){
-                                //System.out.print("{" + mapRooms.get(a)[0] + "," + mapRooms.get(a)[1] + "} :: {" + mapData.get(a)[0] + "," + mapData.get(a)[1] + "} //");
-                            }
                         }
                     }
                 }
@@ -220,7 +216,9 @@ public class MapGenerator {
                 adj -= 1;
                 dir[3] = true;
             }
-            fullMap[mapRooms.get(i)[0]][mapRooms.get(i)[1]] = new Chunk(ChunkG.GenerateChunk(chunkSize, dir[0],dir[1],dir[2],dir[3],1), true);
+            //Chunk name = new Chunk(ChunkG.GenerateChunk(chunkSize, dir[0],dir[1],dir[2],dir[3], 1),true);
+
+            fullMap[mapRooms.get(i)[0]][mapRooms.get(i)[1]] = new Chunk(ChunkG.GenerateChunk(chunkSize, dir[0],dir[1],dir[2],dir[3], 1),true);;
         }
         int[][] empty = new int[0][0];
         for(int i = 0; i < size; i++){

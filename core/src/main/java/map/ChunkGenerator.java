@@ -29,7 +29,6 @@ public class ChunkGenerator {
         boolean willSpread = true; //if the spread hasn't reached the doors yet
         int i = 1;
         while(willSpread){//Add the rooms
-            //System.out.println(i + ": "); //Debug statement to show what loop we are on
 
             boolean next = false;//Precursor to the following do loop
             do {
@@ -37,7 +36,7 @@ public class ChunkGenerator {
                 int roomPlace = rand.nextInt(i);              //Pick a random room that has already placed
                 int[] temparray = new int[]{mapData.get(roomPlace)[0],mapData.get(roomPlace)[1]};     //Take the adjacency values of the random room
                 int[] coords = new int[]{mapRooms.get(roomPlace)[0],mapRooms.get(roomPlace)[1]};       //And check the 2nd item in that array (The number of adjacent rooms)
-                System.out.println(spreadChance <  spread);
+
                 if(temparray[1] == 3 && (spreadChance < .5 * spread || spread >= 1))
                 { //If the room that we are checking is already adjacent to 3 rooms
                     next = true; //Then we will give it half the chance of spreading unless the chance is guarenteed
@@ -78,7 +77,7 @@ public class ChunkGenerator {
                     }else if(coords[0] == 0){//if leftmost room
                         adjacent[3] = true;
                     }
-                    //System.out.print("Testerthing: " + mapData.get(roomPlace)[0] + "=?=" + adj + "\n");
+
                     boolean place = true;
                     while(place){
                         int r = rand.nextInt(4);
@@ -110,14 +109,12 @@ public class ChunkGenerator {
                             chunk[coords[0]][coords[1]] = i; //Here is our new room! Say hi!!
                             //Add the map data
                             mapData.add(new int[]{0,0});
-                            //System.out.print("(" + coords[0] + "," + coords[1] + ") ::" + r + "\n");
 
                             if(coords[1] != 0) {//if not on the top value
                                 if (chunk[coords[0]][coords[1] - 1] != -1) {//If there is a room up adjacent
                                     mapData.get(i)[0] += 8;//update the map data of the new room
                                     mapData.get(i)[1] += 1;
                                     int tempIndex = chunk[coords[0]][coords[1] - 1];
-                                    //System.out.print("weirdTest{" +mapRooms.get(s)[0] + "," + mapRooms.get(s)[1] + "}\n" );
                                     mapData.get(tempIndex)[0] += 2;//update the map data of the adjacent room
                                     mapData.get(tempIndex)[1] += 1;
                                 }
@@ -161,10 +158,6 @@ public class ChunkGenerator {
                             }else{
                                 mapData.get(i)[0] += 1;
                                 mapData.get(i)[1] += 1;
-                            }
-                            //System.out.print("[" + mapData.get(i)[0] + "]}");
-                            for(int a = 0; a <= i; a++){
-                                //System.out.print("{" + mapRooms.get(a)[0] + "," + mapRooms.get(a)[1] + "} :: {" + mapData.get(a)[0] + "," + mapData.get(a)[1] + "} //");
                             }
                         }
                     }

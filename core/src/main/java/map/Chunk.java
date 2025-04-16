@@ -7,5 +7,12 @@ public class Chunk {
         this.chunkMap = thingy;
         this.activeChunk = active;
     }
+    public boolean getActive(){
+        return activeChunk;
+    }
+    public int[][] getChunk(){
+        return chunkMap;
+    }
+
 }
 
