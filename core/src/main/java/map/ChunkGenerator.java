@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ChunkGenerator {
     //protected int[][] Chunk;
-    public int[][] GenerateChunk(int size, boolean up,boolean right,boolean down, boolean left, float spread){
+    public int[][] GenerateChunk(int size, boolean up,boolean right,boolean down, boolean left, float spread, float obstacleDensity){
 
         Random rand = new Random();//Initialize the randomness
         int[][] chunk = new int[size][size];
@@ -182,6 +182,166 @@ public class ChunkGenerator {
                 }
             }
         }
+        if(obstacleDensity >= 0){
+            chunk = placeObstacles(chunk,size,obstacleDensity, up, right, down, left);
+        }
         return chunk;
+    }
+    private int[][] placeObstacles(int[][] chunk, int size, float density, boolean up, boolean right, boolean down, boolean left){
+        if(density <= 0){
+            return chunk;
+        }
+        //Density: higher value means more obstacles
+        Random rand = new Random();
+        int tileCount = 0;
+        List<int[]> obstacleQueue = new ArrayList<int[]>();
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                if(chunk[i][j] == 1){
+                    tileCount++;
+                    obstacleQueue.add(new int[]{i,j});
+                }
+            }
+        }
+        int tilesLeft = tileCount;//the amount of walkable tiles that are left
+        List<int[]> searchedTiles = new ArrayList<int[]>(); //The list of tiles that have been searched so far
+        searchedTiles.add(new int[]{size/2,size/2});
+        for(int i = 0; i < tileCount; i++){
+            int roomToCheck = rand.nextInt(tileCount - i);//pick a random tile from the queue
+            chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 2;//2 in chunk designates obstacle
+            int adjs = 0;
+            if(obstacleQueue.get(roomToCheck)[0] != size - 1) {
+                if (chunk[obstacleQueue.get(roomToCheck)[0] + 1][obstacleQueue.get(roomToCheck)[1]] != 0) {//right
+                    adjs++;
+                }
+            }
+            if(obstacleQueue.get(roomToCheck)[0] != 0) {
+                if (chunk[obstacleQueue.get(roomToCheck)[0] - 1][obstacleQueue.get(roomToCheck)[1]] != 0) {//left
+                    adjs++;
+                }
+            }
+            if(obstacleQueue.get(roomToCheck)[1] != size-1) {
+                if (chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1] + 1] != 0) {//down
+                    adjs++;
+                }
+            }
+            if(obstacleQueue.get(roomToCheck)[1] != 0) {
+                if (chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1] - 1] != 0) {//up
+                    adjs++;
+                }
+            }
+            if(adjs == 1) {
+                //if the new room only borders one other room, then do not place an obstacle
+                chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 1;
+            }else if((obstacleQueue.get(roomToCheck)[0] == 0 && obstacleQueue.get(roomToCheck)[1] == size/2 && left)||//left
+                (obstacleQueue.get(roomToCheck)[0] == size-1 && obstacleQueue.get(roomToCheck)[1] == size/2 && right)||//right
+                (obstacleQueue.get(roomToCheck)[0] == size/2 && obstacleQueue.get(roomToCheck)[1] == 0 && up)||//top
+                (obstacleQueue.get(roomToCheck)[0] == size/2 && obstacleQueue.get(roomToCheck)[1] == size-1 && down)||//bottom
+                (obstacleQueue.get(roomToCheck)[0] == size/2 && obstacleQueue.get(roomToCheck)[1] == size/2)){//center
+                //if it would block the door, do not place an obstacle
+                chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 1;
+            }else if(search(chunk,obstacleQueue.get(roomToCheck)[0],obstacleQueue.get(roomToCheck)[1], size).size() == tilesLeft){
+                //If adding an obstacle here does not disallow the player from reaching anywhere else
+                float chance = rand.nextFloat();
+                if(chance >= density){//adds variance for placing obstacles
+                    chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 1;
+                }else{//if the obstacle actually gets placed
+                    tilesLeft--;
+                }
+            }else{
+                chunk[obstacleQueue.get(roomToCheck)[0]][obstacleQueue.get(roomToCheck)[1]] = 1;
+            }
+            obstacleQueue.remove(roomToCheck);
+        }
+        return chunk;
+    }
+
+    //Shorthand search program
+    private List<int[]> search(int[][] room, int X, int Y, int size){
+        List<int[]> tilesQueue = new ArrayList<int[]>();
+        List<int[]> tilesChecked = new ArrayList<int[]>();
+        tilesQueue.add(new int[]{X,Y});
+        while(!tilesQueue.isEmpty()){
+            //System.out.println(tilesQueue.size());
+            if(tilesQueue.get(0)[1] != 0){//if not up
+                if(room[tilesQueue.get(0)[0]][tilesQueue.get(0)[1]-1] == 1){//up
+                    boolean tileLogged = false;
+                    //if the resulting room is not in either of the existing lists, add it to tilesQueue
+                    for(int i = 0; i < tilesQueue.size(); i++){
+                        if(tilesQueue.get(i)[0] == tilesQueue.get(0)[0] && tilesQueue.get(i)[1] == tilesQueue.get(0)[1]-1){
+                            tileLogged = true;
+                        }
+                    }
+                    for(int i = 0; i < tilesChecked.size(); i++){
+                        if(tilesChecked.get(i)[0] == tilesQueue.get(0)[0] && tilesChecked.get(i)[1] == tilesQueue.get(0)[1]-1){
+                            tileLogged = true;
+                        }
+                    }
+                    if(!tileLogged){
+                        tilesQueue.add(new int[]{tilesQueue.get(0)[0],tilesQueue.get(0)[1]-1});
+                    }
+                }
+            }
+            if(tilesQueue.get(0)[0] != size - 1){//if not right
+                if(room[tilesQueue.get(0)[0]+1][tilesQueue.get(0)[1]] == 1){//right
+                    boolean tileLogged = false;
+                    //if the resulting room is not in either of the existing lists, add it to tilesQueue
+                    for(int i = 0; i < tilesQueue.size(); i++){
+                        if(tilesQueue.get(i)[0] == tilesQueue.get(0)[0]+1 && tilesQueue.get(i)[1] == tilesQueue.get(0)[1]){
+                            tileLogged = true;
+                        }
+                    }
+                    for(int i = 0; i < tilesChecked.size(); i++){
+                        if(tilesChecked.get(i)[0] == tilesQueue.get(0)[0]+1 && tilesChecked.get(i)[1] == tilesQueue.get(0)[1]){
+                            tileLogged = true;
+                        }
+                    }
+                    if(!tileLogged){
+                        tilesQueue.add(new int[]{tilesQueue.get(0)[0]+1,tilesQueue.get(0)[1]});
+                    }
+                }
+            }
+            if(tilesQueue.get(0)[1] != size - 1){//if not down
+                if(room[tilesQueue.get(0)[0]][tilesQueue.get(0)[1]+1] == 1){//down
+                    boolean tileLogged = false;
+                    //if the resulting room is not in either of the existing lists, add it to tilesQueue
+                    for(int i = 0; i < tilesQueue.size(); i++){
+                        if(tilesQueue.get(i)[0] == tilesQueue.get(0)[0] && tilesQueue.get(i)[1] == tilesQueue.get(0)[1]+1){
+                            tileLogged = true;
+                        }
+                    }
+                    for(int i = 0; i < tilesChecked.size(); i++){
+                        if(tilesChecked.get(i)[0] == tilesQueue.get(0)[0] && tilesChecked.get(i)[1] == tilesQueue.get(0)[1]+1){
+                            tileLogged = true;
+                        }
+                    }
+                    if(!tileLogged){
+                        tilesQueue.add(new int[]{tilesQueue.get(0)[0],tilesQueue.get(0)[1]+1});
+                    }
+                }
+            }
+            if(tilesQueue.get(0)[0] != 0){//if not left
+                if(room[tilesQueue.get(0)[0]-1][tilesQueue.get(0)[1]] == 1){//left
+                    boolean tileLogged = false;
+                    //if the resulting room is not in either of the existing lists, add it to tilesQueue
+                    for(int i = 0; i < tilesQueue.size(); i++){
+                        if(tilesQueue.get(i)[0] == tilesQueue.get(0)[0]-1 && tilesQueue.get(i)[1] == tilesQueue.get(0)[1]){
+                            tileLogged = true;
+                        }
+                    }
+                    for(int i = 0; i < tilesChecked.size(); i++){
+                        if(tilesChecked.get(i)[0] == tilesQueue.get(0)[0]-1 && tilesChecked.get(i)[1] == tilesQueue.get(0)[1]){
+                            tileLogged = true;
+                        }
+                    }
+                    if(!tileLogged){
+                        tilesQueue.add(new int[]{tilesQueue.get(0)[0]-1,tilesQueue.get(0)[1]});
+                    }
+                }
+            }
+            tilesChecked.add(tilesQueue.get(0));
+            tilesQueue.remove(0);
+        }
+        return tilesChecked;
     }
 }
