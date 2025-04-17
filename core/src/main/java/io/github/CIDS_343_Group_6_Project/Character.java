@@ -31,6 +31,8 @@ public class Character extends Entity{
     // Constructors
     public Character(Vector2 pos, TextureRegion texture, float width, float height){
         super(new Vector2(pos.x, pos.y), texture, width, height);
+        hitBox.setX(pos.x);
+        hitBox.setY(pos.y);
     }
 
     // character states
@@ -58,6 +60,13 @@ public class Character extends Entity{
     private int character_Strength;
     private int character_magic;
     private int character_intelligence;
+
+    //Rectangle
+    /**
+     * for hit detection
+     */
+    private Rectangle hitBox = new Rectangle();
+    private HitDetector hitDetector = new HitDetector();
 
 
 
