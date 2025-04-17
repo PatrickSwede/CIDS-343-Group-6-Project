@@ -1,6 +1,7 @@
 package io.github.CIDS_343_Group_6_Project;
 
 import map.Chunk;
+import map.EZChunk;
 import map.Tile;
 
 public class Movement {
@@ -8,7 +9,7 @@ public class Movement {
     Chunk chunk;
     Tile[][] tiles;
 
-    public Movement(Character character, Chunk chunk) {
+    public Movement(Character character, EZChunk chunk) {
         this.character = character;
         this.chunk = chunk;
         this.tiles = chunk.getTiles();

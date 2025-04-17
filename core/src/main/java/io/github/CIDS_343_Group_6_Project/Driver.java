@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import map.Chunk;
+import map.EZChunk;
 import map.Tile;
 
 // Adding Comment for Preliminary Project Research Assignment
@@ -40,7 +40,7 @@ public class Driver implements ApplicationListener {
 
     // For hard coded map
     Tile[][] tiles;
-    Chunk chunk;
+    EZChunk echunk;
     Character player;
     Movement movement;
 
@@ -88,10 +88,10 @@ public class Driver implements ApplicationListener {
                 }
             }
 
-        chunk = new Chunk(30, 30, tiles);
-        chunk.setTiles(tiles);
+        echunk = new EZChunk(30, 30, tiles);
+        echunk.setTiles(tiles);
         player = new Character(new Vector2( 400.0f, 400.0f ), new TextureRegion(bucketTexture), 50,50);
-        movement = new Movement(player, chunk);
+        movement = new Movement(player, echunk);
         bucketSprite.translateX(400);
         bucketSprite.translateY(400);
         System.out.println(bucketSprite.getX() + " " +  bucketSprite.getY());
@@ -221,7 +221,7 @@ public class Driver implements ApplicationListener {
         spriteBatch.setProjectionMatrix((viewport.getCamera().combined));
         spriteBatch.begin();
         // Hard coded map
-        chunk.draw(spriteBatch);
+        echunk.draw(spriteBatch);
 
         bucketSprite.draw(spriteBatch);
         /*

@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  * A simple class to generate chunks made of tiles which the environment will consist of
  * @author Patrick Swedenborg
  */
-public class Chunk {
+public class EZChunk {
     private int numberRows;
     private int numberCols;
     private Tile[][] tiles;
@@ -18,7 +18,7 @@ public class Chunk {
      * @param numberCols am int specifying the number of columns
      * @param tiles a two-dimensional array of tiles
      */
-    public Chunk(int numberRows, int numberCols, Tile[][] tiles) {
+    public EZChunk(int numberRows, int numberCols, Tile[][] tiles) {
         this.tiles = tiles;
         this.numberRows = numberRows;
         this.numberCols = numberCols;
