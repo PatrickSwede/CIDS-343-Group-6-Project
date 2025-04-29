@@ -1,5 +1,6 @@
 package io.github.CIDS_343_Group_6_Project;
 import com.badlogic.gdx.math.Rectangle;
+import io.github.CIDS_343_Group_6_Project.Hitbox;
 import map.Tile;
 import org.w3c.dom.css.Rect;
 
