@@ -32,8 +32,22 @@ public class Hitbox extends Entity {
     public void setHeight (float height){
         this.height = height;
     }
-    public void setPosition (float x, float y){
-        this.position.set(x, y);
+    public float getBoxArea(float width, float height){
+        return width * height;
+    }
+    public float getWidth(){
+        return width;
+    }
+    public float getHeight(){
+        return height;
+    }
+    public void setBoxArea(float width, float height){
+        this.width = width;
+        this.height = height;
+        hitbox.setSize(width, height);
+    }
+    public void setPosition (Vector2 pos){
+        this.position.set(pos);
     }
     public Rectangle getHitbox(){
         return hitbox;
