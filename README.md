@@ -507,11 +507,26 @@ Generate the chunk randomly until all 'doors' (the middle border adjacent tiles)
 with the main map
 Spread until the map touches all doors
 
-## Main
+### Main
 
 there is a main method for creating a map as well.
 used for tesing purposes
 
+# Examples
+
+![example image](Documentation/Game_Example.png)
+
+this is our game running with a player sprite in the center of a randomized map
+where they are able to walk around.
+
+# Status
+
+currently we have the map genorator working with a instance of 
+a player being able to walk around it. we would have liked to have 
+gotten further, but with the diffuclty of the randomized map genorator.
+we had to devote much of our time working on that. but we are in a great spot to
+integrate the more logic based components of our game together 
+to make a complete product!
 
 
 
