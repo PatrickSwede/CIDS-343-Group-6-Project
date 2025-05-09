@@ -125,7 +125,7 @@ assigned to them that dictates whether something can move there, if the integer
 is not 1, then something cannot move to that tile and the mehtoud would return fase 
 and the move would be invalid.
 
-## Driver
+### Driver
 
 The driver is like the main method of a java program, where all the objects come
 together to make the whole game. Driver is part of LibGDX and is where you
@@ -179,8 +179,339 @@ currently unused, and a dispose method, which deletes spritebatches and textures
 for when they are uneeded, or delete all the assets being used when the game is 
 over.
 
-## Entity
+### Entity
 
 Entity is the mother of all objects that are going to be 
-represented physically in our game
+represented physically in our game it is a parent class to
+character and prop.
+
+*Data Fields*
+
+Entity comes with
+- Vector2 called pos
+- TextureRegion called texture
+- float called width
+- float called height
+
+*methods*
+
+The constructor takes a vector 2 postion, texture region texture, floats width and 
+height and sets the data fields to the arguments given.
+
+the method draw takes a spritebatch that would be given from the driver
+to draw the texture of the entity on the screen
+
+the rest of the methods are basic getter and setter methods
+
+### Enums
+
+This class is for setting textures on a map using Enums to assign 
+textures to look a certain way. it goes through a 2d array 
+of texture regions and makes a tile set assigning certian tiles 
+of the map to either grass or water currently.
+
+### Prop
+
+the prop class is the main parent of all the prop classes in our 
+project, it is also a child of Entity. It is dependent on 
+a class called HitBox, because of a composition relationship.
+
+*Data Fields*
+
+the prop class contains most of the data fileds that all 
+props use, including
+
+- String name the name of the prop
+- Vector2 position, the position of the prop on the map/screen
+- boolean isInteractive, can the prop be interacted with
+- boolean isDestoryed, is the prop destroyed or not
+- String description, the description of the prop
+- a instance of Hitbox (this will be explained later) called hitbox
+
+*Methods*
+
+The constructor of this class takes a string name, vector2 postiion, boolean is 
+interactive, and a string for the description, it then assigns 
+values to the enitity constructor and assigns the rest of the attributes
+from the arugmets to its own data fields. the constructor also creates a new 
+hitbox object.
+
+there is a method for getting the description of the object and 
+setting the position of the prop as well.
+
+### Consumable
+
+consumable is a child of the Prop class and is meant for 
+consumable props that may not be on the screen, but the characters 
+may use for purposes
+
+*Data Fields*
+the consumable class has only one varable, and int called ConsumableValue
+this is storing a value that could be used for a health potion, poison, shield
+etc, it is open-ended to fit multiple purposes in other classes.
+
+*Methods* 
+the consumable constructor takes the same parameters as the prop class, 
+just adding an int for consumableValue.
+
+then there is a method that returns ConsumableValue called usesConsumable.
+It is basically a getter with a fancy name.
+
+### Weapon
+
+Weapon is a child of Prop and a super class to ranged and bladed classes
+
+This class is primarialy for organizational purposes and only has a constructor 
+with a string for name, vector2 for position, boolean for isinteractive, and a 
+string for description, this class it not inteded to by used by itself
+
+### Bladed
+
+Bladed is a child of the Weapon class is made to represent bladed weapons
+that a character may use.
+
+*Data Fields*
+
+it has no data fields itself and uses data fields from the higher level classes
+that it is a child of.
+
+*Methods*
+
+Bladed has one method called swing. this method is how a character would 
+attack with a bladed weapon. how it works is that it would store the old width and 
+height of its hitbox and then increase the width and height by a set amount 
+for a set period of time, and then return to its old width and height.
+
+the old width and height variables are only inside the method so when the 
+method is complete they are garbage collected and wont hoard any extra space in
+memory.
+
+### Ranged
+
+the ranged class is a child of the weapon class is is made to represent 
+ranged weapons in our game.
+
+*Data Fields*
+
+it contains a vector2 called projectilepos
+and a instance of hitbox called projectilehitbox
+
+*Methods*
+
+the constructor takes the same inputs as the weapon parent and adds them to 
+the prop super constructor.
+
+the only method here is called shoot
+it conains a integer value called distance
+then it created a new vector2 object for the projectile position
+and a new hitbox called projectileHitbox
+then there is a while loop that runs while the distance is less than 200
+while this is happening the y value of the projectile position is increasing 
+and the hitbox position is constantly set to the hitbox position to keep them together
+the distance keeps increasing until it reaches 200 and then the projectile stops.
+
+### Shield
+
+The shield class is currently the final child of the prop class, which is supposed 
+to represent a shield that a character will hold. 
+
+*Data Fields*
+
+Shield only has 1 data field, which is an int called defenceValue
+this number is for when a character takes damage, this value would decrease the 
+damage taken for the character
+
+*Methods*
+
+the constructor is just like the prop constructor, but with the defencevalue 
+integer, and sets the defencevalue according to the argument given
+
+there is also a getter for defencevalue
+
+### Character 
+
+The character class is the parent class if all the different 
+character types in our game 
+
+*Data Fields*
+
+this class has many datafields, for either character states
+or character attributes. 
+the character states are booleans and incluse
+- controllable
+- alive
+- dead
+- hositle
+
+the attributes are all ints except for name, which include
+- string name
+- int character_health
+- character_Strength
+- character_magic
+- character_intelligence
+
+these attributes are meant to change values with prop interactions.
+
+The class also creates a rectangle for hit detection 
+and calls a hitDetector creating a composition relationship.
+
+*methods*
+
+the constructor calls a vector2 for position, a textureregion called texture, 
+float for the width and height. It applies these to the entity super constructor when needes 
+and sets the hitboxes position according to the vector2 x and y coordinates.
+
+the rest of the methods are getters and setters.
+
+### player 
+
+the player class is a child of character and is the class that the 
+user would use to play as someone in the game.
+
+*Data fields* 
+
+the player has its own Texture it stores
+the player also has a arraylist of props called inventory, the player aggregates 
+many props and stores them in a arraylist to be accessed later.
+
+*Methods*
+
+there is a texture method called getPlayerTexture which returns playerTexture 
+and a getter for the inventory
+
+and a method called addtoinventory which takes a prop as a parameter and 
+add a prop to the inventory with the built in array list add method
+there is also a method called getInventoryItem that takes a specific index to 
+receive a specific inventory item.
+
+### NPC 
+
+The npc is just a empty class but a child of Character to organize non player character classes, it is not 
+meant to be used but does have a constructor.
+
+### Passive_Life
+
+the passive_life class is a child of NPC to represent characters that just 
+hang out in the map or roam around without attacking the player 
+
+*Data Fields*
+
+all data fileds come from character
+
+*Methods*
+
+the constructor is the same as Character but also has arguments to change the 
+character attributes
+
+### Enemy
+
+The enemy is a child of Character and is what the player fights
+the constructor is nearly the same as passivelife but the enemy is set to hostile to 
+the player
+
+### Hitbox
+
+the hitbox is a invisible rectangle that is meant to serve as a hitbox
+for all objects on the map. most of the objects that show up on the map
+are dependent on the hitbox
+
+*data fields* 
+
+the hitbox has a rectangle named hitbox that is the hitbox itself
+it also has a vector2 called position 
+and floats named width and height
+
+*Methods*
+
+the constructor takes a postion, texture (for the entity), and a width and height
+and sets everything according
+
+there are getters and setter for the hitbox as well
+
+### HitDetector
+
+*Data Fields* 
+the hitdetector is what takes hitboxes and sees if they are hitting.
+there is a boolean called isHit that keeps track if two hitboxes are hitting each other
+
+*Methods*
+
+the constructor just sets the HitDetector to false
+
+the other method called checkIfHit takes two rectangles(two other hitboxes) and sees
+if they are overlapping with the rectangle.overlaps method and sets isHit to true
+or false if they are overlapping or not and returns ishit afterwards.
+
+### Map Package
+
+![ map package](Documentation/Map_Documentation.png)
+
+the map package is where the map of the game is stored. 
+
+### Tile
+
+the tile class is the smallest portion of the whole map. 
+
+*Data Types*
+
+float size
+ints row and column
+textureRegion secondaryTexture
+tiletype type
+string code
+
+*Methods* 
+
+the tile constructor takes a value for all of the data fields in it
+and sets the data fields according to each value.
+
+there are getters and setters
+
+there is also a method called isPassable that returns true or false 
+depending on if the tiletype is grass or not
+
+then there is a toString method that turns the positon of the tile into a 
+string
+
+### Chunk
+
+the chunk is a set of codes for tiles. depedning on the code,
+a player would be able or unable to pass through the tile.
+
+*Data Fields*
+
+- 2d int array chunkmap
+- boolean named activeChunk
+
+*Methods*
+
+the constructor takes a 2d array of ints called thingy to pass to the chunkmap and 
+sets the boolean to true or false with the parameter active.
+
+there are getters for activechunk and chunkmap
+
+### ChunkGenorator/MapGenorator
+
+These two classes use complex algorithms to make a randomized
+chunk and map in the game the mapgenorator depends on chunkgenorator
+because of a compositon relationship
+
+*How the classes work*
+
+(Example will use a size 9 generation)
+I generate the level first, a 9x9 array where each element will be a 'chunk'
+After generating the 'Level' each nonzero element will generate a chunk
+Within each chunk, each border will be known (Which chunks this generated chunk will be
+adjacent to)
+Generate the chunk randomly until all 'doors' (the middle border adjacent tiles) connect
+with the main map
+Spread until the map touches all doors
+
+## Main
+
+there is a main method for creating a map as well.
+used for tesing purposes
+
+
+
 
