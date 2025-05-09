@@ -3,6 +3,7 @@ package io.github.CIDS_343_Group_6_Project;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import java.util.ArrayList;
 
 /** Player class under character
  *
@@ -14,7 +15,7 @@ public class Player extends Character{
      * currently a placeholder, may not integrate with driver though
      */
     static Texture playerTexture = new Texture("kiryu-chan - Copy.png");
-
+    private ArrayList <Prop> inventory = new ArrayList<Prop>();
     //Constructors
 
     /**
@@ -38,6 +39,16 @@ public class Player extends Character{
     public static Texture getPlayerTexture(){
         return playerTexture;
     }
+    public ArrayList <Prop> getInventory(){
+        return inventory;
+    }
+    public void addToInventory(Prop prop){
+        inventory.add(prop);
+    }
+    public Prop getInventoryItem(int index){
+        return inventory.get(index);
+    }
+
 
 
 
