@@ -88,7 +88,7 @@ public class Driver implements ApplicationListener {
 
         // For random map
         size = 9;
-        numRooms = 200;
+        numRooms = 81;
         spread = 0f;
         chunkSize = 9;
         obstacleDensity = 0f;
@@ -117,8 +117,9 @@ public class Driver implements ApplicationListener {
 
 
         // Initialize Enemies
-        /*
         enemies = CharacterMethods.initializeEnemies(characterSizeX, characterSizeY, map);
+        enemySprites = new ArrayList<Sprite>();
+
         for (int  i = 0; i < enemies.size(); i++) {
             Sprite enemySprite = new Sprite(enemies.get(i).getTexture());
             enemySprite.translateX(enemies.get(i).getPos().x);
@@ -126,10 +127,6 @@ public class Driver implements ApplicationListener {
             enemySprites.add(enemySprite);
 
         }
-
-         */
-
-
     }
 
 
@@ -148,7 +145,7 @@ public class Driver implements ApplicationListener {
 
     private void input() {
 
-        float speed = 50;
+        float speed = 50f;
         float delta = Gdx.graphics.getDeltaTime();
 
         if (keyPress.getUp() && keyPress.getRight()) {
@@ -235,12 +232,12 @@ public class Driver implements ApplicationListener {
         map.draw(spriteBatch);
 
         playerSprite.draw(spriteBatch);
-/*
+
         for (int i = 0; i < enemySprites.size(); i++) {
             enemySprites.get(i).draw(spriteBatch);
         }
 
- */
+
         spriteBatch.end();
     }
 

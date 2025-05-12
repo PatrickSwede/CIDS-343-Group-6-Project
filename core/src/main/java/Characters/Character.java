@@ -14,6 +14,13 @@ import io.github.CIDS_343_Group_6_Project.HitDetector;
 public class Character extends Entity {
 
     private Rectangle collisionHitbox;
+    private float playerCenterX;
+    private float playerCenterY;
+    private Vector2[] playerTopPoints;
+    private Vector2[] playerBotPoints;
+    private Vector2[] playerRightPoints;
+    private Vector2[] playerLeftPoints;
+
 
     /**A basic constructor to make a Character with no parameters
      *
@@ -24,6 +31,13 @@ public class Character extends Entity {
         hitBox.setX(pos.x);
         hitBox.setY(pos.y);
         this.collisionHitbox = new Rectangle(pos.x, pos.y, width, height);
+        this.playerCenterX = pos.x + (width / 2f);
+        this.playerCenterY = pos.y + (height /2f);
+        this.playerTopPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x + 10, pos.y + 10)};
+        this.playerBotPoints = new Vector2[] {new Vector2(pos.x, pos.y),  new Vector2(pos.x + 10, pos.y)};
+        this.playerRightPoints = new Vector2[] {new Vector2(pos.x + 10, pos.y + 10),  new Vector2(pos.x + 10, pos.y)};
+        this.playerLeftPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x, pos.y)};
+
     }
 
     // character states
@@ -69,6 +83,16 @@ public class Character extends Entity {
     public Rectangle getCollisionHitbox() {
         return collisionHitbox;
     }
+
+    public float getPlayerCenterX() {return playerCenterX;}
+
+    public float getPlayerCenterY() {return playerCenterY;}
+
+    public Vector2[] getPlayerTopPoints() {return playerTopPoints;}
+    public Vector2[] getPlayerBotPoints() {return playerBotPoints;}
+    public Vector2[] getPlayerRightPoints() {return playerRightPoints;}
+    public Vector2[] getPlayerLeftPoints() {return playerLeftPoints;}
+
 
     /** state getters
      * Getter for controllabe
@@ -143,6 +167,13 @@ public class Character extends Entity {
     }
     // Setters ---------------------------------------------------------------
     //------------------------------------------------------------------------
+
+    public void setCharacterCoords(Vector2 pos) {
+        this.playerTopPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x + 10, pos.y + 10)};
+        this.playerBotPoints = new Vector2[] {new Vector2(pos.x, pos.y),  new Vector2(pos.x + 10, pos.y)};
+        this.playerRightPoints = new Vector2[] {new Vector2(pos.x + 10, pos.y + 10),  new Vector2(pos.x + 10, pos.y)};
+        this.playerLeftPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x, pos.y)};
+    }
 
     /**
      * setter for controlable

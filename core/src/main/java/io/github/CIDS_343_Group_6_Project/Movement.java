@@ -29,6 +29,105 @@ public class Movement {
         int col;
         Vector2 newPos;
         System.out.println((int) character.getPos().x + ". " + (int) character.getPos().y );
+
+        switch (direction) {
+            case "up":
+                newPos = new Vector2(currentPos.x, currentPos.y + speed);
+                if(character.getPos().y + speed > Enums.SETTINGS.RESOLUTIONY.getValue() - 10) {
+                    return 0;
+                }
+
+                Vector2[] topPoints = character.getPlayerTopPoints();
+                Tile[] topTiles = new Tile[2];
+                topTiles[0] = map.getTileAtPos(topPoints[0]);
+                topTiles[1] = map.getTileAtPos(topPoints[1]);
+                System.out.println(topTiles[0].getIsPassable());
+                System.out.println(topTiles[1].getIsPassable());
+
+
+                for(int i =0; i < 2; i++) {
+                    if (!topTiles[i].getIsPassable()) {
+                        return 0;
+                    }
+                }
+                character.setCharacterCoords(newPos);
+                return speed;
+
+            case "down":
+                newPos = new Vector2(currentPos.x, currentPos.y - speed);
+                if (character.getPos().y - speed < 0) {
+                    return 0;
+                }
+                Vector2[] botPoints = character.getPlayerBotPoints();
+                Tile[] botTiles = new Tile[2];
+                botTiles[0] = map.getTileAtPos(botPoints[0]);
+                botTiles[1] = map.getTileAtPos(botPoints[1]);
+                System.out.println(botTiles[0].getIsPassable());
+                System.out.println(botTiles[1].getIsPassable());
+
+
+                for(int i =0; i < 2; i++) {
+                    if (!botTiles[i].getIsPassable()) {
+                        return 0;
+                    }
+                }
+                character.setCharacterCoords(newPos);
+                return -speed;
+
+            case "right":
+                newPos = new Vector2(character.getPos().x + speed, character.getPos().y);
+                if (character.getPos().x + speed > Enums.SETTINGS.RESOLUTIONX.getValue() - 10) {
+                    return 0;
+                }
+                Vector2[] rightPoints = character.getPlayerRightPoints();
+                Tile[] rightTiles = new Tile[2];
+                rightTiles[0] = map.getTileAtPos(rightPoints[0]);
+                rightTiles[1] = map.getTileAtPos(rightPoints[1]);
+                System.out.println(rightTiles[0].getIsPassable());
+                System.out.println(rightTiles[1].getIsPassable());
+
+
+                for(int i =0; i < 2; i++) {
+                    if (!rightTiles[i].getIsPassable()) {
+                        return 0;
+                    }
+                }
+                character.setCharacterCoords(newPos);
+                return speed;
+
+            case "left":
+                newPos = new Vector2(character.getPos().x - speed, character.getPos().y);
+                if (character.getPos().x - speed < 0) {
+                    return 0;
+                }
+                Vector2[] leftPoints = character.getPlayerLeftPoints();
+                Tile[] leftTiles = new Tile[2];
+                leftTiles[0] = map.getTileAtPos(leftPoints[0]);
+                leftTiles[1] = map.getTileAtPos(leftPoints[1]);
+                System.out.println(leftTiles[0].getIsPassable());
+                System.out.println(leftTiles[1].getIsPassable());
+
+
+                for(int i =0; i < 2; i++) {
+                    if (!leftTiles[i].getIsPassable()) {
+                        return 0;
+                    }
+                }
+                character.setCharacterCoords(newPos);
+                return -speed;
+
+            default:
+                return 0;
+
+        }
+    }
+    /*
+    public float Move(Character character, String direction, float speed) {
+        Vector2 currentPos = character.getPos();
+        int row;
+        int col;
+        Vector2 newPos;
+        System.out.println((int) character.getPos().x + ". " + (int) character.getPos().y );
         switch (direction) {
             case "up":
                 newPos = new Vector2(currentPos.x, currentPos.y + speed);
@@ -83,4 +182,6 @@ public class Movement {
 
         }
     }
+
+     */
 }

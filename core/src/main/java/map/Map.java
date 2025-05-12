@@ -119,6 +119,12 @@ public class Map {
         return tiles[row][col];
     }
 
+    public Tile getTileAtPos(Vector2 pos) {
+        int x = (int) pos.x / 10;
+        int y = (int) pos.y / 10;
+        return tiles[x][y];
+    }
+
     public float getRowAtPos(Vector2 pos) {
         return (float) Math.floor(pos.y / tileSizeY);
     }
