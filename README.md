@@ -470,7 +470,7 @@ there are getters and setters
 there is also a method called isPassable that returns true or false 
 depending on if the tiletype is grass or not
 
-then there is a toString method that turns the positon of the tile into a 
+then there is a toString method that turns the posDocumentation/Game_Example.pngiton of the tile into a 
 string
 
 ### Chunk
