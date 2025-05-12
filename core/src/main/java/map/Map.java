@@ -2,14 +2,19 @@ package map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import io.github.CIDS_343_Group_6_Project.Enums;
 
 /**
  * A simple class to generate chunks made of tiles which the environment will consist of
  * @author Patrick Swedenborg
  */
-public class EZChunk {
+public class Map {
     private int numberRows;
     private int numberCols;
+    private int chunkSize;
+    private int size;
+    private int tileSizeX;
+    private int tileSizeY;
     private Tile[][] tiles;
 
     /**
@@ -18,10 +23,14 @@ public class EZChunk {
      * @param numberCols am int specifying the number of columns
      * @param tiles a two-dimensional array of tiles
      */
-    public EZChunk(int numberRows, int numberCols, Tile[][] tiles) {
+    public Map(int numberRows, int numberCols, int chunkSize, int size, Tile[][] tiles) {
         this.tiles = tiles;
         this.numberRows = numberRows;
         this.numberCols = numberCols;
+        this.chunkSize = chunkSize;
+        this.size = size;
+        tileSizeX = Enums.SETTINGS.RESOLUTIONX.getValue() / (size * chunkSize);
+        tileSizeY = Enums.SETTINGS.RESOLUTIONY.getValue() / (size * chunkSize);
     }
 
     public Tile getTile(Vector2 pos) {
@@ -59,6 +68,10 @@ public class EZChunk {
     public Tile[][] getTiles() {
         return tiles;
     }
+
+    public int getSize() { return size;}
+
+    public int getChunkSize() {return chunkSize;}
 
     /**
      * Setter for numberRows attribute
@@ -106,6 +119,14 @@ public class EZChunk {
         return tiles[row][col];
     }
 
+    public float getRowAtPos(Vector2 pos) {
+        return (float) Math.floor(pos.y / tileSizeY);
+    }
+
+    public float getColAtPos(Vector2 pos) {
+        return (float) Math.floor(pos.x / tileSizeX);
+    }
+
     /**
      * A method to draw the chunk
      * @param batch the spritebatch used to visualize the chunk
@@ -113,9 +134,19 @@ public class EZChunk {
     public void draw(SpriteBatch batch) {
         for(int i = 0 ; i < numberRows; i++) {
             for(int j = 0; j < numberCols; j++) {
-                batch.draw(tiles[i][j].getTexture(), tiles[i][j].getPos().x * tiles[i][j].getSize(),
-                    tiles[i][j].getPos().y * tiles[i][j].getSize(), tiles[i][j].getSize(), tiles[i][j].getSize());
+                batch.draw(tiles[i][j].getTexture(), tiles[i][j].getPos().x,
+                    tiles[i][j].getPos().y , tiles[i][j].getSize(), tiles[i][j].getSize());
             }
         }
+    }
+
+    public void printMap() {
+        for (int i = 0; i < numberRows; i++) {
+            System.out.println();
+            for (int j = 0; j < numberCols; j++) {
+                System.out.print(tiles[i][j].getPos());
+            }
+        }
+
     }
 }

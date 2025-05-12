@@ -1,4 +1,4 @@
-package io.github.CIDS_343_Group_6_Project;
+package Characters;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Enemy class under NPC
  */
-public class Enemy extends NPC{
+public class Enemy extends NPC {
 
     /**
      * constructor for Enemy class

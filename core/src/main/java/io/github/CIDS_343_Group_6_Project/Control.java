@@ -21,6 +21,11 @@ public class Control extends InputAdapter implements InputProcessor {
     private boolean left;
     private boolean right;
 
+    private boolean upLeft;
+    private boolean upRight;
+    private boolean downLeft;
+    private boolean downRight;
+
     // MOUSE
     private boolean  LMB;
     private boolean  RMB;
@@ -37,80 +42,40 @@ public class Control extends InputAdapter implements InputProcessor {
 
     //------------Getter-----------------------------------------------------
     //-----------------------------------------------------------------------
-    public boolean getUp (){
-        return up;
-    }
-    public boolean getDown (){
-        return down;
-    }
-    public boolean getLeft (){
-        return left;
-    }
-    public boolean getRight (){
-        return right;
-    }
-    public boolean getLMB (){
-        return LMB;
-    }
-    public boolean getRMB (){
-        return RMB;
-    }
-    public boolean getProcessed_click (){
-        return processed_click;
-    }
-    public Vector2 getmouse_click_pos (){
-        return mouse_click_pos;
-    }
-    public Vector2 getmap_click_pos (){
-        return map_click_pos;
-    }
-    public boolean getDebug (){
-        return debug;
-    }
-    public int getScreen_width (){
-        return screen_width;
-    }
-    public int getScreen_height (){
-        return screen_height;
-    }
+    public boolean getUp              () {return up;}
+    public boolean getDown            () {return down;}
+    public boolean getLeft            () {return left;}
+    public boolean getRight           () {return right;}
+    public boolean getUpLeft          () {return upLeft;}
+    public boolean getUpRight         () {return upRight;}
+    public boolean getDownLeft        () {return downLeft;}
+    public boolean getDownRight       () {return downRight;}
+    public boolean getLMB             () {return LMB;}
+    public boolean getRMB             () {return RMB;}
+    public boolean getProcessed_click () {return processed_click;}
+    public Vector2 getmouse_click_pos () {return mouse_click_pos;}
+    public Vector2 getmap_click_pos   () {return map_click_pos;}
+    public boolean getDebug           () {return debug;}
+    public int getScreen_width        () {return screen_width;}
+    public int getScreen_height       () {return screen_height;}
     //------------Setter-----------------------------------------------------
     //-----------------------------------------------------------------------
-    public void setUp ( boolean up ){
-        this.up = up;
-    }
-    public void setDown (boolean down){
-        this.down = down;
-    }
-    public void setLeft ( boolean left ){
-        this.left = left;
-    }
-    public void setRight (boolean right){
-            this.right = right;
-    }
-    public void setLMB (boolean LMB){
-        this.LMB = LMB;
-    }
-    public void setRMB (boolean RMB){
-        this.RMB = RMB;
-    }
-    public void setProcessed_click (boolean processed_click){
-        this.processed_click = processed_click;
-    }
-    public void getmouse_click_pos ( Vector2 pos ){
-        this.mouse_click_pos = pos;
-    }
-    public void getmap_click_pos ( Vector2 pos ){
-        this.map_click_pos = pos;
-    }
-    public void setDebug ( boolean debug ){
-        this.debug = debug;
-    }
-    public void setScreen_width ( int screen_width ){
-        this.screen_width = screen_width;
-    }
-    public void setScreen_height ( int screen_height ){
-        this.screen_height = screen_height;
-    }
+    public void setUp              (boolean up)              {this.up = up;}
+    public void setDown            (boolean down)            {this.down = down;}
+    public void setLeft            (boolean left)            {this.left = left;}
+    public void setRight           (boolean right)           {this.right = right;}
+    public void setUpLeft          (boolean upLeft)          {this.upLeft = upLeft;}
+    public void setUpRight         (boolean upRight)         {this.upRight = upRight;}
+    public void setDownLeft        (boolean downLeft)        {this.downLeft = downLeft;}
+    public void setDownRight       (boolean downRight)       {this.downRight = downRight;}
+    public void setLMB             (boolean LMB)             {this.LMB = LMB;}
+    public void setRMB             (boolean RMB)             {this.RMB = RMB;}
+    public void setProcessed_click (boolean processed_click) {this.processed_click = processed_click;}
+    public void getmouse_click_pos (Vector2 pos)             {this.mouse_click_pos = pos;}
+    public void getmap_click_pos   (Vector2 pos)             {this.map_click_pos = pos;}
+    public void setDebug           (boolean debug)           {this.debug = debug;}
+    public void setScreen_width    (int screen_width)        {this.screen_width = screen_width;}
+    public void setScreen_height   (int screen_height)       {this.screen_height = screen_height;}
 
     public Control(int screen_width, int screen_height, OrthographicCamera camera){
         this.camera = camera;

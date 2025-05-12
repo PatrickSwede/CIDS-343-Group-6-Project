@@ -1,30 +1,20 @@
-package io.github.CIDS_343_Group_6_Project;
+package Characters;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import io.github.CIDS_343_Group_6_Project.Entity;
+import io.github.CIDS_343_Group_6_Project.HitDetector;
 
 /** An abstract class to represent all characters in the game.
  * it is a child of the Entity class
  *
  *
  */
-public class Character extends Entity{
+public class Character extends Entity {
+
+    private Rectangle collisionHitbox;
+
     /**A basic constructor to make a Character with no parameters
      *
      */
@@ -33,6 +23,7 @@ public class Character extends Entity{
         super(new Vector2(pos.x, pos.y), texture, width, height);
         hitBox.setX(pos.x);
         hitBox.setY(pos.y);
+        this.collisionHitbox = new Rectangle(pos.x, pos.y, width, height);
     }
 
     // character states
@@ -46,6 +37,7 @@ public class Character extends Entity{
     private boolean alive = true;
     private boolean dead = false;
     private boolean hostile = false;
+
 
     // attributes
     /** Basic Attributes for all Characters
@@ -72,6 +64,11 @@ public class Character extends Entity{
 
     // getters ---------------------------------------------------------------
     //------------------------------------------------------------------------
+
+
+    public Rectangle getCollisionHitbox() {
+        return collisionHitbox;
+    }
 
     /** state getters
      * Getter for controllabe
@@ -217,6 +214,10 @@ public class Character extends Entity{
      */
     public void setName(String name){
         this.name = name;
+    }
+
+    public void setCollisionHitbox(Vector2 pos) {
+        collisionHitbox.setPosition(pos);
     }
 
 }

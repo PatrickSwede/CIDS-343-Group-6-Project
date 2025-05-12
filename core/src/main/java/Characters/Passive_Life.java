@@ -1,4 +1,4 @@
-package io.github.CIDS_343_Group_6_Project;
+package Characters;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  * passive characters class under NPC
  * may be traders, pedestrians, etc
  */
-public class Passive_Life extends NPC{
+public class Passive_Life extends NPC {
 
     /**
      * Constructor for Passive_Life class

@@ -1,65 +1,86 @@
 package io.github.CIDS_343_Group_6_Project;
 
-import map.Chunk;
-import map.EZChunk;
+import Characters.Character;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import map.Map;
 import map.Tile;
 
 public class Movement {
-    Character character;
-    Chunk chunk;
+    Map map;
     Tile[][] tiles;
+    int characterX;
+    int characterY;
 
-    public Movement(Character character, EZChunk chunk) {
-        this.character = character;
-        this.chunk = chunk;
-        this.tiles = chunk.getTiles();
+    public Movement(Map map, float characterX, float characterY) {
+        this.map = map;
+        this.tiles = map.getTiles();
+        this.characterX = (int) characterX / 2;
+        this.characterY = (int) characterY / 2;
     }
 
-    public boolean isMoveValid(String direction) {
-        int col = (int) Math.ceil(character.getPos().x / (80/3f));
-        int row = (int) Math.ceil(character.getPos().y / (80/3f));
+    private boolean checkCollision(Character character, Rectangle rect) {
+        return character.getCollisionHitbox().getX() < rect.getX() + rect.getWidth() && character.getCollisionHitbox().getY() < rect.getY() + rect.getHeight() && character.getCollisionHitbox().getX() + character.getCollisionHitbox().getWidth() > rect.getX() && character.getCollisionHitbox().getY() + character.getCollisionHitbox().getHeight() > rect.getHeight();
+    }
 
-        Tile tile1;
-        Tile tile2;
+    public float Move(Character character, String direction, float speed) {
+        Vector2 currentPos = character.getPos();
+        int row;
+        int col;
+        Vector2 newPos;
+        System.out.println((int) character.getPos().x + ". " + (int) character.getPos().y );
         switch (direction) {
-            case "up right":
-                tile1 = tiles[row + 1][col];
-                tile2 = tiles[row][col + 1];
-                return tile1.getCode().equals("1") && tile2.getCode().equals("1");
-
-            case "up left":
-                tile1 = tiles[row + 1][col];
-                tile2 = tiles[row][col - 1];
-                return tile1.getCode().equals("1") && tile2.getCode().equals("1");
-
             case "up":
-                tile1 = tiles[row + 1][col];
-                return tile1.getCode().equals("1");
-
-            case "down right":
-                tile1 = tiles[row - 1][col];
-                tile2 = tiles[row][col + 1];
-                return tile1.getCode().equals("1") && tile2.getCode().equals("1");
-
-            case "down left":
-                tile1 = tiles[row - 1][col];
-                tile2 = tiles[row][col - 1];
-                return tile1.getCode().equals("1") && tile2.getCode().equals("1");
+                newPos = new Vector2(currentPos.x, currentPos.y + speed);
+                row = (int) (map.getRowAtPos(newPos));
+                col = (int) (map.getColAtPos(newPos));
+                if(character.getPos().y + speed > Enums.SETTINGS.RESOLUTIONY.getValue() - 10) {
+                    return 0;
+                }
+                if (!tiles[row][col].getIsPassable() && checkCollision(character, tiles[row][col].getCollisionHitbox())) {
+                    return 0;
+                }
+                return speed;
 
             case "down":
-                tile1 = tiles[row - 1][col];
-                return tile1.getCode().equals("1");
+                newPos = new Vector2(currentPos.x, currentPos.y - speed);
+                row = (int) Math.floor(map.getRowAtPos(newPos));
+                col = (int) Math.floor(map.getColAtPos(newPos));
+                if (character.getPos().y - speed < 0) {
+                    return 0;
+                }
+                if (!tiles[row][col].getIsPassable() && checkCollision(character, tiles[row][col].getCollisionHitbox())) {
+                    return 0;
+                }
+                return -speed;
 
             case "right":
-                tile1 = tiles[row][col + 1];
-                return tile1.getCode().equals("1");
+                newPos = new Vector2(character.getPos().x + speed, character.getPos().y);
+                row = (int) Math.floor(map.getRowAtPos(newPos));
+                col = (int) Math.floor(map.getColAtPos(newPos));
+                if (character.getPos().x + speed > Enums.SETTINGS.RESOLUTIONX.getValue() - 10) {
+                    return 0;
+                }
+                if (!tiles[row][col].getIsPassable() && checkCollision(character, tiles[row][col].getCollisionHitbox())) {
+                    return 0;
+                }
+                return speed;
 
             case "left":
-                tile1 = tiles[row][col - 1];
-                return tile1.getCode().equals("1");
+                newPos = new Vector2(character.getPos().x - speed, character.getPos().y);
+                row = (int) Math.floor(map.getRowAtPos(newPos));
+                col = (int) Math.floor(map.getColAtPos(newPos));
+                if (character.getPos().x - speed < 0) {
+                    return 0;
+                }
+                if (!tiles[row][col].getIsPassable() && checkCollision(character, tiles[row][col].getCollisionHitbox())) {
+                    return 0;
+                }
+                return -speed;
 
             default:
-                return false;
+                return 0;
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import io.github.CIDS_343_Group_6_Project.Enums.TILETYPE;
 import io.github.CIDS_343_Group_6_Project.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -16,6 +17,8 @@ public class Tile extends Entity {
     private TextureRegion secondaryTexture;
     private TILETYPE type;
     private String code;
+    private boolean isPassable;
+    private Rectangle collisionHitbox;
 
     /**
      * A constructor to instantiate a new tile
@@ -25,13 +28,16 @@ public class Tile extends Entity {
      * @param type the type of tile with all possible types in the Enums class
      * @param texture the primary texture for the tile
      */
-    public Tile(float x, float y, float size, TextureRegion texture, TILETYPE type) {
+    public Tile(float x, float y, float size, TextureRegion texture, TILETYPE type, boolean isPassable) {
         super(new Vector2(x,y), texture, size, size);
         this.size = size;
         this.col = (int) x;
         this.row = (int) y;
         this.type = type;
         this.code = "";
+        this.isPassable = isPassable;
+        this.collisionHitbox = new Rectangle(x, y, size, size);
+
     }
 
     /**
@@ -80,6 +86,12 @@ public class Tile extends Entity {
      */
     public String getCode() {
         return code;
+    }
+
+    public boolean getIsPassable() {return isPassable;}
+
+    public Rectangle getCollisionHitbox() {
+        return collisionHitbox;
     }
 
     /**
@@ -131,13 +143,11 @@ public class Tile extends Entity {
     }
 
     /**
-     * A method to test whether the tile is passable
-     * @return true or false
+     * Setter for isPassable attribute
+     * @param isPassable represented as a boolean
      */
-    public boolean isPassable() {
-        if (type == TILETYPE.GRASS) {
-            return true;
-        } else return false;
+    public void setIsPassable(boolean isPassable) {
+        this.isPassable = isPassable;
     }
 
     /**
@@ -146,6 +156,6 @@ public class Tile extends Entity {
      */
     @Override
     public String toString() {
-        return getPos().toString() + row + " col: " + col + " type: " + type;
+        return getPos().toString() + " row " +  row + " col: " + col + " type: " + type;
     }
 }
