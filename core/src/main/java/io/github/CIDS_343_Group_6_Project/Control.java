@@ -133,33 +133,20 @@ public class Control extends InputAdapter implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Keys.DOWN:
-                down = true;
-                break;
-            case Keys.UP:
-                up = true;
-                break;
-            case Keys.LEFT:
-                left = true;
-                break;
-            case Keys.RIGHT:
-                right = true;
-                break;
-            case Keys.W:
-                up = true;
-                break;
-            case Keys.A:
-                left = true;
-                break;
-            case Keys.S:
-                down = true;
-                break;
-            case Keys.D:
-                right = true;
-                break;
+            case Keys.DOWN: down = true; break;
+            case Keys.UP: up = true; break;
+            case Keys.LEFT: left = true; break;
+            case Keys.RIGHT: right = true; break;
+            case Keys.W: up = true; break;
+            case Keys.A: left = true; break;
+            case Keys.S: down = true; break;
+            case Keys.D: right = true; break;
+            case Keys.ESCAPE: PauseManager.togglePause(); break; // ADD THIS LINE
+            case Keys.BACKSPACE: debug = !debug; break;
         }
         return false;
     }
+
 
     @Override
     public boolean keyUp(int keycode) {

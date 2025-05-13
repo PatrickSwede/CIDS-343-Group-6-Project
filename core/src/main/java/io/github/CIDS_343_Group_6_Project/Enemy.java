@@ -22,5 +22,8 @@ public class Enemy extends NPC{
         this.setCharacterHealth(enemy_health);
         this.setCharacterMagic(enemy_magic);
         this.setCharacterIntelligence(enemy_intelligence);
+
+// SCALE ENEMY LEVEL WHEN CREATED
+        LevelManager.applyLevelToEnemy(this);
     }
 }
