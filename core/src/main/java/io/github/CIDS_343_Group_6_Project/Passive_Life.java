@@ -17,7 +17,7 @@ public class Passive_Life extends NPC{
      * @param life_intelligence
      */
     public Passive_Life(Vector2 pos, TextureRegion texture, float width, float height, String life_name, int life_health, int life_magic, int life_intelligence ){
-        super(new Vector2(pos.x, pos.y), texture, width, height);
+        super(new Vector2(pos.x, pos.y), texture, width, height, life_health);
         this.setControllable(false);
         this.setName(life_name);
         this.setCharacterHealth(life_health);
