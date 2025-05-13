@@ -83,4 +83,46 @@ public class Movement {
 
         }
     }
+
+    public void enemyMove (Vector2 playerpos, Vector2 enemypos, float speed) {
+        if (enemypos.x < playerpos.x) {
+            int min = (int) (playerpos.x - enemypos.x < speed ? playerpos.x - enemypos.x : speed);
+                enemypos.x += min;
+        } else if (enemypos.x > playerpos.x) {
+            int min = (int) (enemypos.x - playerpos.x < speed ? enemypos.x - playerpos.x : speed);
+            enemypos.x -= min;
+        }
+        if (enemypos.y < playerpos.y) {
+            int min = (int) (playerpos.y - enemypos.y < speed ? playerpos.y - enemypos.y : speed);
+            enemypos.y += min;
+        } else if (enemypos.y > playerpos.y) {
+            int min = (int) (enemypos.y - playerpos.y < speed ? enemypos.y - playerpos.y : speed);
+            enemypos.y -= min;
+        }
+    }
+
+
+    // enemy movement refrence from zombiegame by Dr. Jacob Hendricks
+//    public Pair move(int x, int y, int dest_x, int dest_y, int speed){
+//        if (x < dest_x) {
+//            int min = dest_x - x < speed ? dest_x - x : speed;
+//            x += min;
+//        } else if (x > dest_x) {
+//            int min = x - dest_x < speed ? x - dest_x : speed;
+//            x -= min;
+//        }
+//
+//        if (y < dest_y) {
+//            int min = dest_y - y < speed ? dest_y - y : speed;
+//            y += min;
+//        } else if (y > dest_y) {
+//            int min = y - dest_y < speed ? y - dest_y : speed;
+//            y -= min;
+//        }
+//        Pair coord = new Pair();
+//        coord.x = x;
+//        coord.y = y;
+//        return coord;
+//
+//    }
 }

@@ -106,6 +106,13 @@ public class Driver implements ApplicationListener {
         playerSprite.setSize(characterSizeX, characterSizeY);
         movement = new Movement(map, characterSizeX, characterSizeY);
 
+        // For Enemies
+        enemies = new ArrayList<>();
+
+        for(int i = 0; i < 10; i++){
+            enemies.add(new Enemy(new Vector2(50,50),firstEnemyTexture,characterSizeX,
+                characterSizeY, "first Enemies", 100, 0, 0));
+        }
 
 
 
