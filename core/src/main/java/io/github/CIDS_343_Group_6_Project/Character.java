@@ -1,4 +1,4 @@
-package io.github.CIDS_343_Group_6_Project;
+package Characters;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
