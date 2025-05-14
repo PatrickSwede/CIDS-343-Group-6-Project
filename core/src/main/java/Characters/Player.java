@@ -24,8 +24,8 @@ public class Player extends Character {
      * @param player_name
      * set Controllable from character parent to true
      */
-    public Player(Vector2 pos, TextureRegion texture, float width, float height, String player_name, int health){
-        super(new Vector2(pos.x, pos.y), texture, width, height, health);
+    public Player(Vector2 pos, TextureRegion texture, float width, float height, String player_name, int playerHealth){
+        super(new Vector2(pos.x, pos.y), texture, width, height, playerHealth);
         this.name = player_name;
         this.setControllable(true);
     }
