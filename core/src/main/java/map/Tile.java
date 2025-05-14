@@ -19,6 +19,8 @@ public class Tile extends Entity {
     private String code;
     private boolean isPassable;
     private Rectangle collisionHitbox;
+    private float tileCenterX;
+    private float tileCenterY;
 
     /**
      * A constructor to instantiate a new tile
@@ -37,8 +39,14 @@ public class Tile extends Entity {
         this.code = "";
         this.isPassable = isPassable;
         this.collisionHitbox = new Rectangle(x, y, size, size);
+        this.tileCenterX = x + (size / 2f);
+        this.tileCenterY = y + (size / 2f);
 
     }
+
+    public float getTileCenterX() {return tileCenterX;}
+
+    public float getTileCenterY() {return tileCenterY;}
 
     /**
      * Getter for size attribute

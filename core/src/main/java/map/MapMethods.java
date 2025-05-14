@@ -44,18 +44,18 @@ public class MapMethods {
             }
         }
 
-        for (int i = (size * chunkSize) - 1; i >= 0  ; i--) {
+        for (int y = (size * chunkSize) - 1; y >= 0  ; y--) {
             System.out.println();
-            for (int j = 0; j < (size * chunkSize) ; j++) {
-                if (mapCode[i][j] == 0) {
+            for (int x = 0; x < (size * chunkSize) ; x++) {
+                if (mapCode[x][y] == 0) {
                     tempText = Enums.TILETYPE.WATER.getValue();
                     tempType = Enums.TILETYPE.WATER;
                     isPassable = false;
-                } else if (mapCode[i][j] == 1) {
+                } else if (mapCode[x][y] == 1) {
                     tempText = Enums.TILETYPE.GRASS.getValue();
                     tempType = Enums.TILETYPE.GRASS;
                     isPassable = true;
-                } else if (mapCode[i][j] == 2) {
+                } else if (mapCode[x][y] == 2) {
                     tempText = Enums.TILETYPE.WATER.getValue();
                     tempType = Enums.TILETYPE.WATER;
                     isPassable = false;
@@ -64,9 +64,9 @@ public class MapMethods {
                     tempType = Enums.TILETYPE.GRASS;
                     isPassable = true;
                 }
-                tiles[i][j] = new Tile((j * tileSizeX), (i * tileSizeY), Enums.SETTINGS.RESOLUTIONX.getValue()/ (float) (size * chunkSize), tempText, tempType, isPassable);
-                tiles[i][j].setCode(Integer.toString(mapCode[i][j]));
-                System.out.println(tiles[i][j]);
+                tiles[x][y] = new Tile((x * tileSizeX), (y * tileSizeY), Enums.SETTINGS.RESOLUTIONX.getValue()/ (float) (size * chunkSize), tempText, tempType, isPassable);
+                tiles[x][y].setCode(Integer.toString(mapCode[x][y]));
+                System.out.println(tiles[x][y]);
             }
         }
         map = new Map(numRowsCols, numRowsCols, chunkSize, size, tiles);
