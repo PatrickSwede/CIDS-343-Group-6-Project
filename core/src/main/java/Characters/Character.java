@@ -251,4 +251,13 @@ public class Character extends Entity {
         collisionHitbox.setPosition(pos);
     }
 
+    public boolean checkIfDead(){
+        if(character_health <= 0){
+            this.dead = true;
+        }else{
+            this.dead = false;
+        }
+        return dead;
+    }
+
 }
