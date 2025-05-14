@@ -1,4 +1,4 @@
-package io.github.CIDS_343_Group_6_Project;
+package Characters;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -48,9 +48,4 @@ public class Player extends Character{
     public Prop getInventoryItem(int index){
         return inventory.get(index);
     }
-
-
-
-
-
 }
