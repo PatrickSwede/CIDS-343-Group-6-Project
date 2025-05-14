@@ -171,6 +171,13 @@ public class Character extends Entity {
     // Setters ---------------------------------------------------------------
     //------------------------------------------------------------------------
 
+        public void setCharacterCoords(Vector2 pos) {
+        this.playerTopPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x + 10, pos.y + 10)};
+        this.playerBotPoints = new Vector2[] {new Vector2(pos.x, pos.y),  new Vector2(pos.x + 10, pos.y)};
+        this.playerRightPoints = new Vector2[] {new Vector2(pos.x + 10, pos.y + 10),  new Vector2(pos.x + 10, pos.y)};
+        this.playerLeftPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x, pos.y)};
+    }
+
     /**
      * setter for controlable
      *
