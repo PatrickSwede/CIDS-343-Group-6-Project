@@ -49,6 +49,7 @@ public class Hitbox extends Entity {
     public void setPosition (Vector2 pos){
         this.position.set(pos);
     }
+
     public Rectangle getHitbox(){
         return hitbox;
     }

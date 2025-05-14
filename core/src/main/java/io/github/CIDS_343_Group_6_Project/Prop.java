@@ -1,7 +1,7 @@
 package io.github.CIDS_343_Group_6_Project;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-public abstract class Prop {
+public abstract class Prop extends Entity {
     protected String name;
     protected Vector2 position;
 //    protected int x, y; // position
@@ -12,6 +12,7 @@ public abstract class Prop {
     protected Hitbox hitbox;
 
     public Prop(String name, Vector2 position, boolean isInteractive,String description) {
+        super(position, null, 5, 5 );
         this.name = name;
         this.isInteractive = isInteractive;
         this.isDestroyed = false;
