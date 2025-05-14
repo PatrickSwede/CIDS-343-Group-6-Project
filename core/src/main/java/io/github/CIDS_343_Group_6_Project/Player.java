@@ -3,6 +3,7 @@ package Characters;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import io.github.CIDS_343_Group_6_Project.Prop;
 import java.util.ArrayList;
 
 /** Player class under character
