@@ -21,7 +21,6 @@ public class Character extends Entity {
     private Vector2[] playerRightPoints;
     private Vector2[] playerLeftPoints;
 
-
     /**A basic constructor to make a Character with no parameters
      *
      */
@@ -37,7 +36,6 @@ public class Character extends Entity {
         this.playerBotPoints = new Vector2[] {new Vector2(pos.x, pos.y),  new Vector2(pos.x + 10, pos.y)};
         this.playerRightPoints = new Vector2[] {new Vector2(pos.x + 10, pos.y + 10),  new Vector2(pos.x + 10, pos.y)};
         this.playerLeftPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x, pos.y)};
-
     }
 
     // character states
@@ -75,24 +73,18 @@ public class Character extends Entity {
     private HitDetector hitDetector = new HitDetector();
 
 
-
     // getters ---------------------------------------------------------------
     //------------------------------------------------------------------------
-
 
     public Rectangle getCollisionHitbox() {
         return collisionHitbox;
     }
-
     public float getPlayerCenterX() {return playerCenterX;}
-
     public float getPlayerCenterY() {return playerCenterY;}
-
     public Vector2[] getPlayerTopPoints() {return playerTopPoints;}
     public Vector2[] getPlayerBotPoints() {return playerBotPoints;}
     public Vector2[] getPlayerRightPoints() {return playerRightPoints;}
     public Vector2[] getPlayerLeftPoints() {return playerLeftPoints;}
-
 
     /** state getters
      * Getter for controllabe
