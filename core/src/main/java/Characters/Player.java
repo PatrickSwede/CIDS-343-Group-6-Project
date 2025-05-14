@@ -6,13 +6,11 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.CIDS_343_Group_6_Project.Prop;
 import java.util.ArrayList;
 
-
 /** Player class under character
  *
  */
 public class Player extends Character {
     // Data Fields
-
     // test texture
     /** player texture
      * currently a placeholder, may not integrate with driver though
@@ -30,7 +28,6 @@ public class Player extends Character {
         super(new Vector2(pos.x, pos.y), texture, width, height);
         this.name = player_name;
         this.setControllable(true);
-
     }
 
 
@@ -52,13 +49,4 @@ public class Player extends Character {
     public Prop getInventoryItem(int index){
         return inventory.get(index);
     }
-
-
-
-
-
-
-
-
-
 }
