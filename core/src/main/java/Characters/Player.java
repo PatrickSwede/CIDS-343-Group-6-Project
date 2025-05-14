@@ -3,6 +3,7 @@ package Characters;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import io.github.CIDS_343_Group_6_Project.Bladed;
 import io.github.CIDS_343_Group_6_Project.Prop;
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class Player extends Character {
         super(new Vector2(pos.x, pos.y), texture, width, height, playerHealth);
         this.name = player_name;
         this.setControllable(true);
+        inventory.add(new Bladed("Basic Sword", pos, true, "crap"));
     }
 
 

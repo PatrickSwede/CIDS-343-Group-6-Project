@@ -1,4 +1,5 @@
 package io.github.CIDS_343_Group_6_Project;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public abstract class Prop extends Entity {
@@ -31,4 +32,9 @@ public abstract class Prop extends Entity {
 
     public void setPostiion(Vector2 postition ) {
         this.position = postition; }
+
+    public Rectangle getHitboxRect() {
+        return hitbox.getHitbox();
+    }
 }
+
