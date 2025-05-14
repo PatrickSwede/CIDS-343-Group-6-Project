@@ -1,14 +1,25 @@
 package Characters;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import io.github.CIDS_343_Group_6_Project.Entity;
+import io.github.CIDS_343_Group_6_Project.HitDetector;
 
 /**
  * An abstract class to represent all characters in the game.
  * it is a child of the Entity class
  */
 public class Character extends Entity {
+
+    private Rectangle collisionHitbox;
+    private float playerCenterX;
+    private float playerCenterY;
+    private Vector2[] playerTopPoints;
+    private Vector2[] playerBotPoints;
+    private Vector2[] playerRightPoints;
+    private Vector2[] playerLeftPoints;
+    
     /**
      * A basic constructor to make a Character with no parameters
      */
@@ -17,6 +28,13 @@ public class Character extends Entity {
         super(new Vector2(pos.x, pos.y), texture, width, height);
         hitBox.setX(pos.x);
         hitBox.setY(pos.y);
+        this.collisionHitbox = new Rectangle(pos.x, pos.y, width, height);
+        this.playerCenterX = pos.x + (width / 2f);
+        this.playerCenterY = pos.y + (height /2f);
+        this.playerTopPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x + 10, pos.y + 10)};
+        this.playerBotPoints = new Vector2[] {new Vector2(pos.x, pos.y),  new Vector2(pos.x + 10, pos.y)};
+        this.playerRightPoints = new Vector2[] {new Vector2(pos.x + 10, pos.y + 10),  new Vector2(pos.x + 10, pos.y)};
+        this.playerLeftPoints = new Vector2[] {new Vector2(pos.x, pos.y + 10),  new Vector2(pos.x, pos.y)};
     }
 
     // character states
@@ -57,6 +75,16 @@ public class Character extends Entity {
 
     // getters ---------------------------------------------------------------
     //------------------------------------------------------------------------
+
+    public Rectangle getCollisionHitbox() {
+        return collisionHitbox;
+    }
+    public float getPlayerCenterX() {return playerCenterX;}
+    public float getPlayerCenterY() {return playerCenterY;}
+    public Vector2[] getPlayerTopPoints() {return playerTopPoints;}
+    public Vector2[] getPlayerBotPoints() {return playerBotPoints;}
+    public Vector2[] getPlayerRightPoints() {return playerRightPoints;}
+    public Vector2[] getPlayerLeftPoints() {return playerLeftPoints;}
 
     /**
      * state getters
