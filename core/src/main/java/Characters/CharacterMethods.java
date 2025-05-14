@@ -14,7 +14,7 @@ public class CharacterMethods {
                                              TextureRegion playerTexture, Sprite playerSprite) {
         Player player = new Player(new Vector2( spawnTileX * characterSizeX,
             spawnTileY * characterSizeY ), playerTexture,
-            characterSizeX,characterSizeY, "The Guy");
+            characterSizeX,characterSizeY, "The Guy", 100);
         playerSprite.translateX(spawnTileX * characterSizeX);
         playerSprite.translateY(spawnTileY * characterSizeY);
         return player;

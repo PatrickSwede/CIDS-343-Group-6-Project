@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class NPC extends Character {
 
-    NPC(Vector2 pos, TextureRegion texture, float width, float height) {
-        super(new Vector2(pos.x, pos.y), texture, width, height);
+    NPC(Vector2 pos, TextureRegion texture, float width, float height, int health) {
+        super(new Vector2(pos.x, pos.y), texture, width, height, health);
     }
 
 }

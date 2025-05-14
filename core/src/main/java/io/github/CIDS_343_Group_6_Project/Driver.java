@@ -163,7 +163,7 @@ public class Driver implements ApplicationListener {
             camera.position.y += (y);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if (keyPress.getUp() && keyPress.getLeft()) {
             float y = movement.Move(player,"up", speed * delta);
             float x = movement.Move(player,"left", speed * delta);
@@ -172,13 +172,13 @@ public class Driver implements ApplicationListener {
             camera.position.y += (y);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if (keyPress.getUp()) {
             float y = movement.Move(player,"up", speed * delta);
             playerSprite.translateY(y);
             camera.position.y += (y);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if (keyPress.getDown() && keyPress.getRight()) {
             float y = movement.Move(player,"down", speed * delta);
             float x = movement.Move(player,"right", speed * delta);
@@ -187,7 +187,7 @@ public class Driver implements ApplicationListener {
             camera.position.y += (y);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if (keyPress.getDown() && keyPress.getLeft()) {
             float y = movement.Move(player,"down", speed * delta);
             float x = movement.Move(player,"left", speed * delta);
@@ -196,25 +196,25 @@ public class Driver implements ApplicationListener {
             camera.position.y += (y);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if (keyPress.getDown()) {
             float y = movement.Move(player, "down", speed * delta);
             playerSprite.translateY(y);
             camera.position.y += (y);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if(keyPress.getRight()) {
             float x = movement.Move(player,"right", speed * delta);
             playerSprite.translateX(x);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         } else if(keyPress.getLeft()) {
             float x = movement.Move(player,"left", speed * delta);
             playerSprite.translateX(x);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
-            player.setCollisionHitbox(player.getPos());
+
         }
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
