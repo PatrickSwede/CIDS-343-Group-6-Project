@@ -21,19 +21,19 @@ public class CharacterMethods {
     }
 
     public static ArrayList<Enemy> initializeEnemies(float characterSizeX, float characterSizeY, Map map) {
-        int spawnTileX;
-        int spawnTileY;
+        float spawnTileX;
+        float spawnTileY;
         Tile[][] tiles = map.getTiles();
         int chunkSize = map.getChunkSize();
         Enemy enemy;
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        for (int i = 0; i < map.getNumberRows() / map.getSize(); i++) {
-            for (int j = 0; j < map.getNumberCols() / map.getSize(); j++) {
-                if (tiles[(i * (int) chunkSize) + (chunkSize / 2)][(j * (int) chunkSize) + (chunkSize / 2)].getIsPassable()) {
-                    spawnTileX = (i * (int) characterSizeX) + chunkSize / 2;
-                    spawnTileY = (j * (int) characterSizeX) + chunkSize / 2;
-                    enemy = new Enemy(new Vector2(spawnTileX * characterSizeX, spawnTileY * characterSizeY), Enums.ENEMIES.FIRST.getValue(),
+        for (int y = 0; y < map.getSize(); y++) {
+            for (int x = 0; x < map.getSize(); x++) {
+                if (tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getIsPassable()) {
+                    spawnTileX = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().x;
+                    spawnTileY = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().y;
+                    enemy = new Enemy(new Vector2(spawnTileX, spawnTileY), Enums.ENEMIES.FIRST.getValue(),
                        characterSizeX, characterSizeY, "Bad Guy", 10, 10, 10);
                     enemies.add(enemy);
 
