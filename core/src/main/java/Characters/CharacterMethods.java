@@ -25,12 +25,17 @@ public class CharacterMethods {
         float spawnTileY;
         Tile[][] tiles = map.getTiles();
         int chunkSize = map.getChunkSize();
+        int mapSize = map.getSize();
         Enemy enemy;
         ArrayList<Enemy> enemies = new ArrayList<>();
+        Tile centerMap = tiles[(chunkSize * mapSize) / 2][(chunkSize * mapSize) / 2];
 
-        for (int y = 0; y < map.getSize(); y++) {
-            for (int x = 0; x < map.getSize(); x++) {
-                if (tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getIsPassable()) {
+        for (int y = 0; y < mapSize; y++) {
+            for (int x = 0; x < mapSize; x++) {
+                if(tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].equals(centerMap)) {
+                    continue;
+                }
+                else if (tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getIsPassable()) {
                     spawnTileX = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().x;
                     spawnTileY = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().y;
                     enemy = new Enemy(new Vector2(spawnTileX, spawnTileY), Enums.ENEMIES.FIRST.getValue(),
