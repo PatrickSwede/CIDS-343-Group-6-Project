@@ -98,7 +98,7 @@ public class Driver implements ApplicationListener {
         numRooms = 81;
         spread = 0f;
         chunkSize = 9;
-        obstacleDensity = 0f;
+        obstacleDensity = 0.05f;
         tileSizeX = Enums.SETTINGS.RESOLUTIONX.getValue() / (chunkSize * size);
         tileSizeY = Enums.SETTINGS.RESOLUTIONY.getValue() / (chunkSize * size);
         map = MapMethods.initializeLevel(size, numRooms, spread, chunkSize, obstacleDensity);
