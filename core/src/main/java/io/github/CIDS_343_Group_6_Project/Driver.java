@@ -6,6 +6,7 @@ import Characters.Enemy;
 import Characters.Player;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -62,6 +63,12 @@ public class Driver implements ApplicationListener {
 
     // For enemies
     ArrayList<Enemy> enemies;
+
+    // For items
+    Bladed retrievedProp;
+
+    // For combat logic
+    HitDetector hitDetector = new HitDetector();
 
     @Override
     public void create() {
@@ -215,7 +222,11 @@ public class Driver implements ApplicationListener {
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
+        } else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            Bladed retrievedProp = (Bladed) player.getInventoryItem(0);
+            retrievedProp.Swing();
         }
+
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             //viewport.unproject(touchPos);
@@ -228,7 +239,15 @@ public class Driver implements ApplicationListener {
     }
 
     private void logic() {
-
+        Bladed retrievedProp = (Bladed) player.getInventoryItem(0);
+        Rectangle PropRect = retrievedProp.getHitboxRect();
+        Rectangle enemyRect = enemies.get(0).getCollisionHitbox();
+        if(hitDetector.checkIfHit(PropRect, enemyRect)){
+            enemies.get(0).setCharacterHealth(enemies.get(0).getCharacterHealth() - 10);
+            if(enemies.get(0).checkIfDead()){
+                enemies.remove(enemies.get(0));
+            }
+        }
     }
 
     private void draw() {
