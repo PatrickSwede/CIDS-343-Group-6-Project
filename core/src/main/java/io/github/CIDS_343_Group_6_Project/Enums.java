@@ -41,6 +41,17 @@ public class Enums {
         return textures;
     }
 
+    private static TextureRegion[][] getWeapons() {
+        Texture tileMap = new Texture(Gdx.files.internal("Sheet_Small.png"));
+        TextureRegion[][] textures = new TextureRegion[8][4];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 4; j++) {
+                textures[i][j] = new TextureRegion(tileMap, i * 8, j * 8, 8, 8);
+            }
+        }
+        return textures;
+    }
+
 
 
     public static final TextureRegion[][] textures = getTileSet();
@@ -48,6 +59,8 @@ public class Enums {
     public static final TextureRegion[][] player = getPlayerStances();
 
     public static final TextureRegion[][] enemy = getEnemies();
+
+    public static final TextureRegion[][] weapon = getWeapons();
 
     public enum TILETYPE {
 
@@ -91,6 +104,16 @@ public class Enums {
         private final TextureRegion texture;
 
         ENEMIES(TextureRegion texture) {this.texture = texture;}
+
+        public TextureRegion getValue() {return texture;}
+    }
+
+    public enum WEAPONS {
+        STARTER (weapon [0][3]);
+
+        private final TextureRegion texture;
+
+        WEAPONS(TextureRegion texture) {this.texture = texture;}
 
         public TextureRegion getValue() {return texture;}
     }

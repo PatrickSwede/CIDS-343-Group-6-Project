@@ -1,23 +1,20 @@
 package io.github.CIDS_343_Group_6_Project;
 
-import Characters.Character;
 import Characters.CharacterMethods;
 import Characters.Enemy;
 import Characters.Player;
+import Props.Prop;
+import Props.Weapon;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import map.*;
 
@@ -57,13 +54,14 @@ public class Driver implements ApplicationListener {
     ArrayList<Sprite> enemySprites;
     float characterSizeX;
     float characterSizeY;
+    boolean attacking;
 
     // For enemies
     ArrayList<Enemy> enemies;
 
     // For items
-    Bladed retrievedProp;
-
+    Weapon starterSword;
+    Rectangle equippedWeapon;
     // For combat logic
     HitDetector hitDetector;
     long startTime;
@@ -107,6 +105,7 @@ public class Driver implements ApplicationListener {
         characterSizeY = tileSizeY;
         playerSprite.setSize(characterSizeX, characterSizeY);
         movement = new Movement(map, characterSizeX, characterSizeY);
+        boolean attacking = false;
 
         // For Enemies
         enemies = new ArrayList<>();
@@ -129,8 +128,9 @@ public class Driver implements ApplicationListener {
         }
 
         // For items
-        //retrievedProp;
-
+        starterSword = new Weapon(player.getPos(), Enums.WEAPONS.STARTER.getValue(), 8, 8, true,
+            "Starter Sword", 10);
+        player.addToInventory(starterSword);
         // For combat logic
         hitDetector = new HitDetector();
         startTime = System.currentTimeMillis();
@@ -216,35 +216,25 @@ public class Driver implements ApplicationListener {
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
-        } else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            Bladed retrievedProp = (Bladed) player.getInventoryItem(0);
-            retrievedProp.Swing();
         }
-
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            attacking = true;
+        }
+        /*
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             //viewport.unproject(touchPos);
             playerSprite.setCenterX(touchPos.x);
             playerSprite.setCenterY(touchPos.y);
         }
+
+         */
         camera.update();
 
 
     }
 
     private void logic() {
-        /*
-        Bladed retrievedProp = (Bladed) player.getInventoryItem(0);
-        Rectangle PropRect = retrievedProp.getHitboxRect();
-        Rectangle enemyRect = enemies.get(0).getCollisionHitbox();
-        if(hitDetector.checkIfHit(PropRect, enemyRect)){
-            enemies.get(0).setCharacterHealth(enemies.get(0).getCharacterHealth() - 10);
-            if(enemies.get(0).checkIfDead()){
-                enemies.remove(enemies.get(0));
-            }
-        }
-
-         */
         // Update timers
         elapsedTime = System.currentTimeMillis() - startTime;
         elapsedSeconds = elapsedTime / 1000;
@@ -253,7 +243,27 @@ public class Driver implements ApplicationListener {
         float speed = 50f;
         float delta = Gdx.graphics.getDeltaTime();
 
+        // Simple combat
+        if (attacking) {
+            player.getInventoryItem(0).setHitboxRect(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
+            player.getInventoryItem(0).setPos(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
+            equippedWeapon =  player.getInventoryItem(0).getHitboxRect();
+            for (int i = 0; i < enemies.size(); i++) {
+                Rectangle enemyRect = enemies.get(i).getCollisionHitbox();
+                System.out.println(equippedWeapon.overlaps(enemyRect));
+                System.out.println(equippedWeapon.toString());
+                if (equippedWeapon.overlaps(enemyRect)) {
+                    enemies.get(i).setCharacterHealth(enemies.get(i).getCharacterHealth() - 10);
+                    System.out.println(enemies.get(i).getCharacterHealth());
+                    if (enemies.get(i).checkIfDead()) {
+                        enemies.remove(enemies.get(i));
+                        enemySprites.remove(enemySprites.get(i));
+                    }
+                }
+            }
+        }
 
+        // Enemy Movement
         for (int i = 0; i< enemies.size(); i++) {
             dir = ranDir.nextInt(4);
             if (dir == 0) {
@@ -273,10 +283,24 @@ public class Driver implements ApplicationListener {
                 enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x + x, enemies.get(i).getPos().y));
                 enemySprites.get(i).translateX(x);
             }
-
-
         }
 
+        // Check if all enemies are dead
+        if (enemies.isEmpty()) {
+            map = MapMethods.initializeLevel(size, numRooms, spread, chunkSize, obstacleDensity);
+            player.setPos(new Vector2(spawnTilePosX * characterSizeX, spawnTilePosY * characterSizeY));
+            camera.position.x = spawnTilePosX * characterSizeX;
+            camera.position.y = spawnTilePosY * characterSizeY;
+            playerSprite.setPosition(spawnTilePosX * characterSizeX, spawnTilePosY * characterSizeY);
+            enemies = CharacterMethods.initializeEnemies(characterSizeX, characterSizeY, map);
+            // Draw the new enemies
+            for (int  i = 0; i < enemies.size(); i++) {
+                Sprite enemySprite = new Sprite(enemies.get(i).getTexture());
+                enemySprite.translateX(enemies.get(i).getPos().x);
+                enemySprite.translateY(enemies.get(i).getPos().y);
+                enemySprites.add(enemySprite);
+            }
+        }
     }
 
     private void draw() {
@@ -288,6 +312,10 @@ public class Driver implements ApplicationListener {
         playerSprite.draw(spriteBatch);
         for (int i = 0; i < enemySprites.size(); i++) {
             enemySprites.get(i).draw(spriteBatch);
+        }
+        if (attacking) {
+            player.getInventoryItem(0).draw(spriteBatch);
+            attacking = false;
         }
 
         spriteBatch.end();
