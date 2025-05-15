@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Hitbox extends Entity {
     private Rectangle hitbox = new Rectangle();
-    private Vector2 position = new Vector2();
+    private Vector2 pos;
     private float width;
     private float height;
 
@@ -47,7 +47,7 @@ public class Hitbox extends Entity {
         hitbox.setSize(width, height);
     }
     public void setPosition (Vector2 pos){
-        this.position.set(pos);
+        this.pos.set(pos);
     }
 
     public Rectangle getHitbox(){

@@ -3,16 +3,21 @@ package Props;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-public class Consumable extends Prop{
-    private int ConsumableValue = 0;
+public class Consumable implements ActiveProp {
+    private String name;
+    private int consumableValue;
 
-    public Consumable(Vector2 pos, TextureRegion texture, int width, int height, boolean isInteractive,
-                      String name, int ConsumableValue) {
-        super(pos, texture, width, height, isInteractive, name);
-        this.ConsumableValue = ConsumableValue;
+    public Consumable(String name, int consumableValue) {
+        this.name = name;
+        this.consumableValue = consumableValue;
     }
 
-    public int usesConsumable() {
-        return ConsumableValue;
-    }
+
+    public String getName() { return this.name; }
+
+    public int getConsumableValue() { return this.consumableValue; }
+
+    public void setName(String name) { this.name = name; }
+
+    public void setConsumableValue(int consumableValue) { this.consumableValue = consumableValue; }
 }

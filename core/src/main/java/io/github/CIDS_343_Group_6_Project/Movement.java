@@ -23,7 +23,7 @@ public class Movement {
         return character.getCollisionHitbox().getX() < rect.getX() + rect.getWidth() && character.getCollisionHitbox().getY() < rect.getY() + rect.getHeight() && character.getCollisionHitbox().getX() + character.getCollisionHitbox().getWidth() > rect.getX() && character.getCollisionHitbox().getY() + character.getCollisionHitbox().getHeight() > rect.getHeight();
     }
 
-    public float Move(Character character, String direction, float speed) {
+    public float move(Character character, String direction, float speed) {
         Vector2 currentPos = character.getPos();
         Vector2 newPos;
         switch (direction) {
