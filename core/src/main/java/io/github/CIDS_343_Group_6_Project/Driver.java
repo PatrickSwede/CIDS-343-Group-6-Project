@@ -3,7 +3,7 @@ package io.github.CIDS_343_Group_6_Project;
 import Characters.CharacterMethods;
 import Characters.Enemy;
 import Characters.Player;
-import Props.Prop;
+import Props.ActiveProp;
 import Props.Weapon;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -61,7 +61,8 @@ public class Driver implements ApplicationListener {
 
     // For items
     Weapon starterSword;
-    Rectangle equippedWeapon;
+    Weapon equippedWeapon;
+
     // For combat logic
     HitDetector hitDetector;
     long startTime;
@@ -128,11 +129,11 @@ public class Driver implements ApplicationListener {
         }
 
         // For items
-        starterSword = new Weapon(player.getPos(), Enums.WEAPONS.STARTER.getValue(), 8, 8, true,
-            "Starter Sword", 10);
-        player.addToInventory(starterSword);
+        starterSword = new Weapon(player.getPos(), Enums.WEAPONS.STARTER.getValue(), 8, 8,
+            "Starter Sword", 1);
+        player.addToActiveProps(starterSword);
+        player.setEquippedWeapon(starterSword);
         // For combat logic
-        hitDetector = new HitDetector();
         startTime = System.currentTimeMillis();
         ranDir = new Random();
     }
@@ -157,8 +158,8 @@ public class Driver implements ApplicationListener {
         float delta = Gdx.graphics.getDeltaTime();
 
         if (keyPress.getUp() && keyPress.getRight()) {
-            float y = movement.Move(player,"up", speed * delta);
-            float x = movement.Move(player,"right", speed * delta);
+            float y = movement.move(player,"up", speed * delta);
+            float x = movement.move(player,"right", speed * delta);
             playerSprite.translateY(y);
             playerSprite.translateX(x);
             camera.position.y += (y);
@@ -166,8 +167,8 @@ public class Driver implements ApplicationListener {
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if (keyPress.getUp() && keyPress.getLeft()) {
-            float y = movement.Move(player,"up", speed * delta);
-            float x = movement.Move(player,"left", speed * delta);
+            float y = movement.move(player,"up", speed * delta);
+            float x = movement.move(player,"left", speed * delta);
             playerSprite.translateY(y);
             playerSprite.translateX(x);
             camera.position.y += (y);
@@ -175,14 +176,14 @@ public class Driver implements ApplicationListener {
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if (keyPress.getUp()) {
-            float y = movement.Move(player,"up", speed * delta);
+            float y = movement.move(player,"up", speed * delta);
             playerSprite.translateY(y);
             camera.position.y += (y);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if (keyPress.getDown() && keyPress.getRight()) {
-            float y = movement.Move(player,"down", speed * delta);
-            float x = movement.Move(player,"right", speed * delta);
+            float y = movement.move(player,"down", speed * delta);
+            float x = movement.move(player,"right", speed * delta);
             playerSprite.translateY(y);
             playerSprite.translateX(x);
             camera.position.y += (y);
@@ -190,8 +191,8 @@ public class Driver implements ApplicationListener {
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if (keyPress.getDown() && keyPress.getLeft()) {
-            float y = movement.Move(player,"down", speed * delta);
-            float x = movement.Move(player,"left", speed * delta);
+            float y = movement.move(player,"down", speed * delta);
+            float x = movement.move(player,"left", speed * delta);
             playerSprite.translateY(y);
             playerSprite.translateX(x);
             camera.position.y += (y);
@@ -199,19 +200,19 @@ public class Driver implements ApplicationListener {
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if (keyPress.getDown()) {
-            float y = movement.Move(player, "down", speed * delta);
+            float y = movement.move(player, "down", speed * delta);
             playerSprite.translateY(y);
             camera.position.y += (y);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if(keyPress.getRight()) {
-            float x = movement.Move(player,"right", speed * delta);
+            float x = movement.move(player,"right", speed * delta);
             playerSprite.translateX(x);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
 
         } else if(keyPress.getLeft()) {
-            float x = movement.Move(player,"left", speed * delta);
+            float x = movement.move(player,"left", speed * delta);
             playerSprite.translateX(x);
             camera.position.x += (x);
             player.setPos(new Vector2(playerSprite.getX(), playerSprite.getY()));
@@ -245,15 +246,11 @@ public class Driver implements ApplicationListener {
 
         // Simple combat
         if (attacking) {
-            player.getInventoryItem(0).setHitboxRect(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
-            player.getInventoryItem(0).setPos(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
-            equippedWeapon =  player.getInventoryItem(0).getHitboxRect();
+            player.getEquippedWeapon().setHitbox(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
+            player.getEquippedWeapon().setPos(new Vector2(player.getPos().x + (characterSizeX), player.getPos().y + (characterSizeY - 7)));
             for (int i = 0; i < enemies.size(); i++) {
-                Rectangle enemyRect = enemies.get(i).getCollisionHitbox();
-                System.out.println(equippedWeapon.overlaps(enemyRect));
-                System.out.println(equippedWeapon.toString());
-                if (equippedWeapon.overlaps(enemyRect)) {
-                    enemies.get(i).setCharacterHealth(enemies.get(i).getCharacterHealth() - 10);
+                if (player.getEquippedWeapon().getHitbox().overlaps(enemies.get(i).getCollisionHitbox())) {
+                    enemies.get(i).setCharacterHealth(enemies.get(i).getCharacterHealth() - player.getEquippedWeapon().getDamage());
                     System.out.println(enemies.get(i).getCharacterHealth());
                     if (enemies.get(i).checkIfDead()) {
                         enemies.remove(enemies.get(i));
@@ -267,19 +264,19 @@ public class Driver implements ApplicationListener {
         for (int i = 0; i< enemies.size(); i++) {
             dir = ranDir.nextInt(4);
             if (dir == 0) {
-                float y = movement.Move(enemies.get(i), "up", speed * delta);
+                float y = movement.move(enemies.get(i), "up", speed * delta);
                 enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x, enemies.get(i).getPos().y + y));
                 enemySprites.get(i).translateY(y);
             } else if (dir == 1) {
-                float y = movement.Move(enemies.get(i), "down", speed * delta);
+                float y = movement.move(enemies.get(i), "down", speed * delta);
                 enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x, enemies.get(i).getPos().y + y));
                 enemySprites.get(i).translateY(y);
             } else if(dir == 2) {
-                float x = movement.Move(enemies.get(i), "right", speed * delta);
+                float x = movement.move(enemies.get(i), "right", speed * delta);
                 enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x + x, enemies.get(i).getPos().y));
                 enemySprites.get(i).translateX(x);
             } else {
-                float x = movement.Move(enemies.get(i), "left", speed * delta);
+                float x = movement.move(enemies.get(i), "left", speed * delta);
                 enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x + x, enemies.get(i).getPos().y));
                 enemySprites.get(i).translateX(x);
             }
@@ -314,7 +311,7 @@ public class Driver implements ApplicationListener {
             enemySprites.get(i).draw(spriteBatch);
         }
         if (attacking) {
-            player.getInventoryItem(0).draw(spriteBatch);
+            player.getEquippedWeapon().draw(spriteBatch);
             attacking = false;
         }
 

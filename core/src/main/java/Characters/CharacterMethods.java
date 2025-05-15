@@ -39,7 +39,7 @@ public class CharacterMethods {
                     spawnTileX = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().x;
                     spawnTileY = tiles[(y * chunkSize) + (chunkSize / 2)][(x *  chunkSize) + (chunkSize / 2)].getPos().y;
                     enemy = new Enemy(new Vector2(spawnTileX, spawnTileY), Enums.ENEMIES.FIRST.getValue(),
-                       characterSizeX, characterSizeY, "Bad Guy", 10, 10, 10);
+                       characterSizeX, characterSizeY, "Bad Guy", 50, 10, 10);
                     enemies.add(enemy);
 
                 }
