@@ -22,23 +22,21 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import map.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Driver implements ApplicationListener {
+    // Textures and Sprites
     TextureRegion playerTexture;
     TextureRegion firstEnemyTexture;
-    Sound dropSound;
-    Music music;
     SpriteBatch spriteBatch;
-
-    Vector2 touchPos;
-
 
     // For camera and controls
     OrthographicCamera camera;
     int displayHeight;
     int displayWidth;
     Control keyPress;
+    Vector2 touchPos;
 
     // For random map
     int size;
@@ -60,7 +58,6 @@ public class Driver implements ApplicationListener {
     float characterSizeX;
     float characterSizeY;
 
-
     // For enemies
     ArrayList<Enemy> enemies;
 
@@ -68,19 +65,20 @@ public class Driver implements ApplicationListener {
     Bladed retrievedProp;
 
     // For combat logic
-    HitDetector hitDetector = new HitDetector();
+    HitDetector hitDetector;
+    long startTime;
+    long elapsedTime;
+    long elapsedSeconds;
+    long elapsedMinutes;
+    Random ranDir;
+    String[] enemyDir;
 
     @Override
     public void create() {
         // objects
-
         playerTexture = Enums.PLAYER.STANDING.getValue();
         firstEnemyTexture = Enums.ENEMIES.FIRST.getValue();
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
-        music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
         spriteBatch = new SpriteBatch();
-        touchPos = new Vector2();
-
 
         // Camera and Controls
         displayHeight = 400;
@@ -90,8 +88,8 @@ public class Driver implements ApplicationListener {
         camera.position.x += Enums.SETTINGS.RESOLUTIONX.getValue() / 2f;
         camera.position.y += Enums.SETTINGS.RESOLUTIONY.getValue() / 2f;
         keyPress = new Control (Enums.SETTINGS.RESOLUTIONX.getValue(), Enums.SETTINGS.RESOLUTIONY.getValue(),camera);
+        touchPos = new Vector2();
         Gdx.input.setInputProcessor(keyPress);
-
 
         // For random map
         size = 9;
@@ -103,10 +101,7 @@ public class Driver implements ApplicationListener {
         tileSizeY = Enums.SETTINGS.RESOLUTIONY.getValue() / (chunkSize * size);
         map = MapMethods.initializeLevel(size, numRooms, spread, chunkSize, obstacleDensity);
 
-
-
         // For Characters
-
         playerSprite = new Sprite(playerTexture);
         characterSizeX = tileSizeX;
         characterSizeY = tileSizeY;
@@ -116,19 +111,11 @@ public class Driver implements ApplicationListener {
         // For Enemies
         enemies = new ArrayList<>();
 
-        for(int i = 0; i < 10; i++){
-            enemies.add(new Enemy(new Vector2(50,50),firstEnemyTexture,characterSizeX,
-                characterSizeY, "first Enemies", 100, 0, 0));
-        }
-
-
-
         // Initialize Player
         spawnTilePosX = map.getNumberRows() / 2;
         spawnTilePosY = map.getNumberRows() / 2;
         player = CharacterMethods.initializePlayer(spawnTilePosX, spawnTilePosY, characterSizeX, characterSizeY, playerTexture,
             playerSprite);
-
 
         // Initialize Enemies
         enemies = CharacterMethods.initializeEnemies(characterSizeX, characterSizeY, map);
@@ -139,8 +126,15 @@ public class Driver implements ApplicationListener {
             enemySprite.translateX(enemies.get(i).getPos().x);
             enemySprite.translateY(enemies.get(i).getPos().y);
             enemySprites.add(enemySprite);
-
         }
+
+        // For items
+        //retrievedProp;
+
+        // For combat logic
+        hitDetector = new HitDetector();
+        startTime = System.currentTimeMillis();
+        ranDir = new Random();
     }
 
 
@@ -239,6 +233,7 @@ public class Driver implements ApplicationListener {
     }
 
     private void logic() {
+        /*
         Bladed retrievedProp = (Bladed) player.getInventoryItem(0);
         Rectangle PropRect = retrievedProp.getHitboxRect();
         Rectangle enemyRect = enemies.get(0).getCollisionHitbox();
@@ -248,21 +243,52 @@ public class Driver implements ApplicationListener {
                 enemies.remove(enemies.get(0));
             }
         }
+
+         */
+        // Update timers
+        elapsedTime = System.currentTimeMillis() - startTime;
+        elapsedSeconds = elapsedTime / 1000;
+        elapsedMinutes = elapsedSeconds / 60;
+        int dir;
+        float speed = 50f;
+        float delta = Gdx.graphics.getDeltaTime();
+
+
+        for (int i = 0; i< enemies.size(); i++) {
+            dir = ranDir.nextInt(4);
+            if (dir == 0) {
+                float y = movement.Move(enemies.get(i), "up", speed * delta);
+                enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x, enemies.get(i).getPos().y + y));
+                enemySprites.get(i).translateY(y);
+            } else if (dir == 1) {
+                float y = movement.Move(enemies.get(i), "down", speed * delta);
+                enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x, enemies.get(i).getPos().y + y));
+                enemySprites.get(i).translateY(y);
+            } else if(dir == 2) {
+                float x = movement.Move(enemies.get(i), "right", speed * delta);
+                enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x + x, enemies.get(i).getPos().y));
+                enemySprites.get(i).translateX(x);
+            } else {
+                float x = movement.Move(enemies.get(i), "left", speed * delta);
+                enemies.get(i).setPos(new Vector2 (enemies.get(i).getPos().x + x, enemies.get(i).getPos().y));
+                enemySprites.get(i).translateX(x);
+            }
+
+
+        }
+
     }
 
     private void draw() {
         ScreenUtils.clear(Color.BLACK);
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
-        // map
+        // All Sprites drawn here
         map.draw(spriteBatch);
-
         playerSprite.draw(spriteBatch);
-
         for (int i = 0; i < enemySprites.size(); i++) {
             enemySprites.get(i).draw(spriteBatch);
         }
-
 
         spriteBatch.end();
     }
