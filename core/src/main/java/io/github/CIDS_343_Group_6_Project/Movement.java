@@ -25,11 +25,7 @@ public class Movement {
 
     public float Move(Character character, String direction, float speed) {
         Vector2 currentPos = character.getPos();
-        int row;
-        int col;
         Vector2 newPos;
-        System.out.println((int) character.getPos().x + ". " + (int) character.getPos().y );
-
         switch (direction) {
             case "up":
                 newPos = new Vector2(currentPos.x, currentPos.y + speed);
@@ -41,10 +37,6 @@ public class Movement {
                 Tile[] topTiles = new Tile[2];
                 topTiles[0] = map.getTileAtPos(topPoints[0]);
                 topTiles[1] = map.getTileAtPos(topPoints[1]);
-                System.out.println(topTiles[0].getIsPassable());
-                System.out.println(topTiles[1].getIsPassable());
-
-
                 for(int i =0; i < 2; i++) {
                     if (!topTiles[i].getIsPassable()) {
                         return 0;
@@ -62,10 +54,6 @@ public class Movement {
                 Tile[] botTiles = new Tile[2];
                 botTiles[0] = map.getTileAtPos(botPoints[0]);
                 botTiles[1] = map.getTileAtPos(botPoints[1]);
-                System.out.println(botTiles[0].getIsPassable());
-                System.out.println(botTiles[1].getIsPassable());
-
-
                 for(int i =0; i < 2; i++) {
                     if (!botTiles[i].getIsPassable()) {
                         return 0;
@@ -83,10 +71,6 @@ public class Movement {
                 Tile[] rightTiles = new Tile[2];
                 rightTiles[0] = map.getTileAtPos(rightPoints[0]);
                 rightTiles[1] = map.getTileAtPos(rightPoints[1]);
-                System.out.println(rightTiles[0].getIsPassable());
-                System.out.println(rightTiles[1].getIsPassable());
-
-
                 for(int i =0; i < 2; i++) {
                     if (!rightTiles[i].getIsPassable()) {
                         return 0;
@@ -104,10 +88,6 @@ public class Movement {
                 Tile[] leftTiles = new Tile[2];
                 leftTiles[0] = map.getTileAtPos(leftPoints[0]);
                 leftTiles[1] = map.getTileAtPos(leftPoints[1]);
-                System.out.println(leftTiles[0].getIsPassable());
-                System.out.println(leftTiles[1].getIsPassable());
-
-
                 for(int i =0; i < 2; i++) {
                     if (!leftTiles[i].getIsPassable()) {
                         return 0;
@@ -121,7 +101,7 @@ public class Movement {
 
         }
     }
-  
+
     public void enemyMove (Vector2 playerpos, Vector2 enemypos, float speed) {
         if (enemypos.x < playerpos.x) {
             int min = (int) (playerpos.x - enemypos.x < speed ? playerpos.x - enemypos.x : speed);

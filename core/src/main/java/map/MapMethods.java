@@ -66,7 +66,6 @@ public class MapMethods {
                 }
                 tiles[x][y] = new Tile((x * tileSizeX), (y * tileSizeY), Enums.SETTINGS.RESOLUTIONX.getValue()/ (float) (size * chunkSize), tempText, tempType, isPassable);
                 tiles[x][y].setCode(Integer.toString(mapCode[x][y]));
-                System.out.println(tiles[x][y]);
             }
         }
         map = new Map(numRowsCols, numRowsCols, chunkSize, size, tiles);
