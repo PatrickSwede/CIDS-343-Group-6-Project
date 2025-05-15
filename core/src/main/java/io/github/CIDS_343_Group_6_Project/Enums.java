@@ -52,7 +52,8 @@ public class Enums {
     public enum TILETYPE {
 
         GRASS   (textures[1][0]),
-        WATER   (textures[1][14]);
+        WATER   (textures[1][14]),
+        TREES   (textures[17][1]);
 
         private final TextureRegion texture;
 

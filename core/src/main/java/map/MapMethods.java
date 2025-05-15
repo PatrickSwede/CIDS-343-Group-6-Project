@@ -56,8 +56,8 @@ public class MapMethods {
                     tempType = Enums.TILETYPE.GRASS;
                     isPassable = true;
                 } else if (mapCode[x][y] == 2) {
-                    tempText = Enums.TILETYPE.WATER.getValue();
-                    tempType = Enums.TILETYPE.WATER;
+                    tempText = Enums.TILETYPE.TREES.getValue();
+                    tempType = Enums.TILETYPE.TREES;
                     isPassable = false;
                 } else {
                     tempText = Enums.TILETYPE.GRASS.getValue();
