@@ -43,6 +43,7 @@ public class Movement {
                     }
                 }
                 character.setCharacterCoords(newPos);
+                character.setCollisionHitbox(newPos);
                 return speed;
 
             case "down":
@@ -60,6 +61,7 @@ public class Movement {
                     }
                 }
                 character.setCharacterCoords(newPos);
+                character.setCollisionHitbox(newPos);
                 return -speed;
 
             case "right":
@@ -77,6 +79,7 @@ public class Movement {
                     }
                 }
                 character.setCharacterCoords(newPos);
+                character.setCollisionHitbox(newPos);
                 return speed;
 
             case "left":
@@ -94,6 +97,7 @@ public class Movement {
                     }
                 }
                 character.setCharacterCoords(newPos);
+                character.setCollisionHitbox(newPos);
                 return -speed;
 
             default:
